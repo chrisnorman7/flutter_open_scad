@@ -1,4 +1,4 @@
-export 'app_settings.dart';
+export 'app_preferences.dart';
 export 'circle_arguments.dart';
 export 'cylinder_arguments.dart';
 export 'polygon_arguments.dart';

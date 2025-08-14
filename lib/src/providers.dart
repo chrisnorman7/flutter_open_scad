@@ -22,12 +22,24 @@ Future<AppPreferences> appPreferences(final Ref ref) async {
   return AppPreferences.fromJson(json as Map<String, dynamic>);
 }
 
-/// Get the recent file paths.
+/// Provide the list of all open files.
 @riverpod
-Future<List<File>> recentFiles(final Ref ref) async {
+Future<List<File>> openFiles(final Ref ref) async {
   final preferences = await ref.watch(appPreferencesProvider.future);
-  return preferences.recentFiles
+  return preferences.openFiles
       .map(File.new)
       .where((final file) => file.existsSync())
       .toList();
+}
+
+/// Provide a single project.
+@riverpod
+ProjectContext project(final Ref ref, final String filename) {
+  final file = File(filename);
+  final source = file.readAsStringSync();
+  final json = jsonDecode(source);
+  return ProjectContext(
+    file: file,
+    project: Project.fromJson(json as Map<String, dynamic>),
+  );
 }
