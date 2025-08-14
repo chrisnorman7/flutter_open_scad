@@ -1,5 +1,6 @@
 import 'package:backstreets_widgets/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_open_scad/src/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// A screen for creating or selecting a project.
@@ -18,12 +19,12 @@ class SelectProjectScreen extends ConsumerWidget {
             children: [
               IconButton(
                 autofocus: true,
-                onPressed: () {},
+                onPressed: () => createProject(ref),
                 icon: const Icon(Icons.add),
                 tooltip: 'Create a new project',
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () => openProject(ref),
                 icon: const Icon(Icons.file_open),
                 tooltip: 'Open an existing project',
               ),

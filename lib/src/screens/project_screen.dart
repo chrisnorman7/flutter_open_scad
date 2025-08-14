@@ -18,7 +18,10 @@ class ProjectScreen extends ConsumerWidget {
     final project = projectContext.project;
     final modules = project.modules;
     if (modules.isEmpty) {
-      return const CenterText(text: 'This project contains no modules.');
+      return const CenterText(
+        text: 'This project contains no modules.',
+        autofocus: true,
+      );
     }
     return ListView.builder(
       itemBuilder: (final context, final index) {
