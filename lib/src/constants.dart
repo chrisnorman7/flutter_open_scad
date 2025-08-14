@@ -50,18 +50,21 @@ Future<void> openProject(final WidgetRef ref) async {
     dialogTitle: 'Open Project File(s)',
     initialDirectory: (await getApplicationDocumentsDirectory()).path,
   );
-  final filenames = <String>[];
+  final openFiles = await ref.read(openFilesProvider.future);
   for (final result in results?.files ?? <PlatformFile>[]) {
     final filename = result.path;
     if (filename == null) {
       continue;
     }
     try {
+      if (openFiles.filenames.contains(filename)) {
+        continue;
+      }
       final file = File(filename);
       final source = file.readAsStringSync();
       final json = jsonDecode(source);
       Project.fromJson(json as Map<String, dynamic>);
-      filenames.add(file.path);
+      openFiles.filenames.add(filename);
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       final context = ref.context;
@@ -72,8 +75,6 @@ Future<void> openProject(final WidgetRef ref) async {
       }
     }
   }
-  final openFiles = await ref.read(openFilesProvider.future);
-  openFiles.filenames.addAll(filenames);
   await openFiles.save();
   ref.invalidate(openFilesProvider);
 }
