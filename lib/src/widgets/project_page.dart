@@ -4,9 +4,9 @@ import 'package:flutter_open_scad/src/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// A screen which shows a single project.
-class ProjectScreen extends ConsumerWidget {
+class ProjectPage extends ConsumerWidget {
   /// Create an instance.
-  const ProjectScreen(this.filename, {super.key});
+  const ProjectPage(this.filename, {super.key});
 
   /// The filename of the project.
   final String filename;

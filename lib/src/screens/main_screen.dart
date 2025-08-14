@@ -44,7 +44,7 @@ class MainScreen extends ConsumerWidget {
             child: SimpleScaffold(
               actions: [MenuButton(menuChildren: actionsContext.menuChildren)],
               title: path.basename(file.path),
-              body: ProjectScreen(file.path),
+              body: ProjectPage(file.path),
             ),
           );
         }
@@ -60,7 +60,7 @@ class MainScreen extends ConsumerWidget {
               icon: Text(path.basename(file.path)),
               child: CallbackShortcuts(
                 bindings: actionsContext.bindings,
-                child: ProjectScreen(file.path),
+                child: ProjectPage(file.path),
               ),
             );
           }).toList(),
