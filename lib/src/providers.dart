@@ -8,28 +8,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'providers.g.dart';
 
 /// The preferences key where the preferences are stored.
-const appPreferencesKey = 'flutter_open_scad_app_preferences';
-
-/// Provide the app preferences.
-@riverpod
-Future<AppPreferences> appPreferences(final Ref ref) async {
-  final preferences = SharedPreferencesAsync();
-  final source = await preferences.getString(appPreferencesKey);
-  if (source == null) {
-    return AppPreferences();
-  }
-  final json = jsonDecode(source);
-  return AppPreferences.fromJson(json as Map<String, dynamic>);
-}
+const openFilesKey = 'flutter_open_scad_open_files';
 
 /// Provide the list of all open files.
 @riverpod
-Future<List<File>> openFiles(final Ref ref) async {
-  final preferences = await ref.watch(appPreferencesProvider.future);
-  return preferences.openFiles
-      .map(File.new)
-      .where((final file) => file.existsSync())
-      .toList();
+Future<OpenFiles> openFiles(final Ref ref) async {
+  final preferences = SharedPreferencesAsync();
+  return OpenFiles((await preferences.getStringList(openFilesKey)) ?? []);
 }
 
 /// Provide a single project.

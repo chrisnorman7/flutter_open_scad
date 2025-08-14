@@ -6,48 +6,6 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-/// Provide the app preferences.
-@ProviderFor(appPreferences)
-const appPreferencesProvider = AppPreferencesProvider._();
-
-/// Provide the app preferences.
-final class AppPreferencesProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<AppPreferences>,
-          AppPreferences,
-          FutureOr<AppPreferences>
-        >
-    with $FutureModifier<AppPreferences>, $FutureProvider<AppPreferences> {
-  /// Provide the app preferences.
-  const AppPreferencesProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'appPreferencesProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$appPreferencesHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<AppPreferences> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<AppPreferences> create(Ref ref) {
-    return appPreferences(ref);
-  }
-}
-
-String _$appPreferencesHash() => r'c42faa336721456d37a30352005093d746e16317';
-
 /// Provide the list of all open files.
 @ProviderFor(openFiles)
 const openFilesProvider = OpenFilesProvider._();
@@ -56,11 +14,11 @@ const openFilesProvider = OpenFilesProvider._();
 final class OpenFilesProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<File>>,
-          List<File>,
-          FutureOr<List<File>>
+          AsyncValue<OpenFiles>,
+          OpenFiles,
+          FutureOr<OpenFiles>
         >
-    with $FutureModifier<List<File>>, $FutureProvider<List<File>> {
+    with $FutureModifier<OpenFiles>, $FutureProvider<OpenFiles> {
   /// Provide the list of all open files.
   const OpenFilesProvider._()
     : super(
@@ -78,16 +36,16 @@ final class OpenFilesProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<File>> $createElement($ProviderPointer pointer) =>
+  $FutureProviderElement<OpenFiles> $createElement($ProviderPointer pointer) =>
       $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<File>> create(Ref ref) {
+  FutureOr<OpenFiles> create(Ref ref) {
     return openFiles(ref);
   }
 }
 
-String _$openFilesHash() => r'ba2c8f75ef64fc60b2ce68bdfcc533ae1e9461de';
+String _$openFilesHash() => r'bd4976c52ff6523f323e85d2039a11d715a6e48b';
 
 /// Provide a single project.
 @ProviderFor(project)

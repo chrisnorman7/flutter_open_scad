@@ -14,7 +14,8 @@ class MainScreen extends ConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final value = ref.watch(openFilesProvider);
     return value.when(
-      data: (final files) {
+      data: (final openFiles) {
+        final files = openFiles.openFiles;
         if (files.isEmpty) {
           return const SelectProjectScreen();
         } else if (files.length == 1) {

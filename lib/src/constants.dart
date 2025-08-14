@@ -36,9 +36,9 @@ Future<void> createProject(final WidgetRef ref) async {
   }
   final file = File(filePath);
   ProjectContext(file: file, project: project).save(ref);
-  final preferences = await ref.read(appPreferencesProvider.future);
-  preferences.openFiles.add(filePath);
-  await preferences.save();
+  final openFiles = await ref.read(openFilesProvider.future);
+  openFiles.filenames.add(filePath);
+  await openFiles.save();
   ref.invalidate(openFilesProvider);
 }
 
@@ -72,8 +72,8 @@ Future<void> openProject(final WidgetRef ref) async {
       }
     }
   }
-  final preferences = await ref.read(appPreferencesProvider.future);
-  preferences.openFiles.addAll(filenames);
-  await preferences.save();
-  ref.invalidate(appPreferencesProvider);
+  final openFiles = await ref.read(openFilesProvider.future);
+  openFiles.filenames.addAll(filenames);
+  await openFiles.save();
+  ref.invalidate(openFilesProvider);
 }
