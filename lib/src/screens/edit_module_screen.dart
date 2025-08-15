@@ -36,43 +36,63 @@ class EditModuleScreen extends ConsumerWidget {
           name: shapeTypes[i].name.sentenceCase,
           invoke: () {
             final shapeType = shapeTypes[i];
-            module.shapes.add(
-              Shape(
-                id: newId(),
-                type: shapeType,
-                arguments: switch (shapeType) {
-                  ShapeType.circle => CircleArguments().toJson(),
-                  ShapeType.square => SquareArguments().toJson(),
-                  ShapeType.cube => CubeArguments().toJson(),
-                  ShapeType.cylinder => CylinderArguments().toJson(),
-                  ShapeType.sphere => SphereArguments().toJson(),
-                  ShapeType.polygon => PolygonArguments(
-                    points: [
-                      PolygonPoint(),
-                      PolygonPoint(y: 3),
-                      PolygonPoint(x: 3),
-                    ],
-                  ).toJson(),
-                  ShapeType.polyhedron => PolyhedronArguments(
-                    points: [
-                      PolyhedronPoint(),
-                      PolyhedronPoint(y: 3),
-                      PolyhedronPoint(x: 3, y: 3),
-                      PolyhedronPoint(x: 3),
-                      PolyhedronPoint(z: 3),
-                      PolyhedronPoint(y: 3, z: 3),
-                      PolyhedronPoint(x: 3, y: 3, z: 3),
-                      PolyhedronPoint(x: 3, z: 3),
-                    ],
-                  ).toJson(),
-                  ShapeType.module => const ModuleArguments(
-                    id: 'asdf',
-                    arguments: {},
-                  ).toJson(),
-                },
-              ),
-            );
-            projectContext.save(ref);
+            if (shapeType == ShapeType.module) {
+              context.pushWidgetBuilder(
+                (_) => SelectModule(
+                  filename: projectFilename,
+                  onDone: (final value) {
+                    module.shapes.add(
+                      Shape(
+                        id: newId(),
+                        type: ShapeType.module,
+                        arguments: ModuleArguments(
+                          id: value.id,
+                          arguments: {},
+                        ).toJson(),
+                      ),
+                    );
+                    projectContext.save(ref);
+                  },
+                  moduleId: module.id,
+                ),
+              );
+              return;
+            } else {
+              module.shapes.add(
+                Shape(
+                  id: newId(),
+                  type: shapeType,
+                  arguments: switch (shapeType) {
+                    ShapeType.circle => CircleArguments().toJson(),
+                    ShapeType.square => SquareArguments().toJson(),
+                    ShapeType.cube => CubeArguments().toJson(),
+                    ShapeType.cylinder => CylinderArguments().toJson(),
+                    ShapeType.sphere => SphereArguments().toJson(),
+                    ShapeType.polygon => PolygonArguments(
+                      points: [
+                        PolygonPoint(),
+                        PolygonPoint(y: 3),
+                        PolygonPoint(x: 3),
+                      ],
+                    ).toJson(),
+                    ShapeType.polyhedron => PolyhedronArguments(
+                      points: [
+                        PolyhedronPoint(),
+                        PolyhedronPoint(y: 3),
+                        PolyhedronPoint(x: 3, y: 3),
+                        PolyhedronPoint(x: 3),
+                        PolyhedronPoint(z: 3),
+                        PolyhedronPoint(y: 3, z: 3),
+                        PolyhedronPoint(x: 3, y: 3, z: 3),
+                        PolyhedronPoint(x: 3, z: 3),
+                      ],
+                    ).toJson(),
+                    ShapeType.module => throw UnimplementedError(),
+                  },
+                ),
+              );
+              projectContext.save(ref);
+            }
           },
           activator: CrossPlatformSingleActivator(switch (shapeTypes[i]) {
             ShapeType.circle => LogicalKeyboardKey.keyC,
