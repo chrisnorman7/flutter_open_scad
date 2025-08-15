@@ -17,12 +17,16 @@ const _uuid = Uuid();
 /// Generate a new id.
 String newId() => _uuid.v7();
 
+/// The file extension for projects.
+const projectFileExtension = '.fcad';
+
 /// Create a new project.
 Future<void> createProject(final WidgetRef ref) async {
   final filename = await FilePicker.platform.saveFile(
-    allowedExtensions: ['.json'],
+    allowedExtensions: [projectFileExtension],
     dialogTitle: 'Create Project',
     initialDirectory: (await getApplicationDocumentsDirectory()).path,
+    type: FileType.custom,
   );
   if (filename == null) {
     return;
@@ -46,9 +50,10 @@ Future<void> createProject(final WidgetRef ref) async {
 Future<void> openProject(final WidgetRef ref) async {
   final results = await FilePicker.platform.pickFiles(
     allowMultiple: true,
-    allowedExtensions: ['.json'],
+    allowedExtensions: [projectFileExtension],
     dialogTitle: 'Open Project File(s)',
     initialDirectory: (await getApplicationDocumentsDirectory()).path,
+    type: FileType.custom,
   );
   final openFiles = await ref.read(openFilesProvider.future);
   for (final result in results?.files ?? <PlatformFile>[]) {
