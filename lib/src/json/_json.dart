@@ -1,4 +1,5 @@
 export 'circle_arguments.dart';
+export 'cube_arguments.dart';
 export 'cylinder_arguments.dart';
 export 'module_arguments.dart';
 export 'module_variable.dart';
