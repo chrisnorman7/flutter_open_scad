@@ -18,7 +18,6 @@ class ProjectContext {
   /// Save [project] to [file].
   void save(final WidgetRef ref) {
     final source = jsonEncode(project.toJson());
-    print(source);
     file.writeAsStringSync(source);
     ref.invalidate(projectProvider(file.path));
   }
