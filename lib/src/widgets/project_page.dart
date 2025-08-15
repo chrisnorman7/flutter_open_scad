@@ -4,8 +4,7 @@ import 'package:backstreets_widgets/shortcuts.dart';
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_open_scad/src/constants.dart';
-import 'package:flutter_open_scad/src/providers.dart';
+import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// A screen which shows a single project.
@@ -67,7 +66,12 @@ class ProjectPage extends ConsumerWidget {
           autofocus: index == 0,
           title: Text(module.name),
           subtitle: Text('${module.shapes.length}'),
-          onTap: () {},
+          onTap: () => context.pushWidgetBuilder(
+            (_) => EditModuleScreen(
+              moduleId: module.id,
+              projectFilename: filename,
+            ),
+          ),
         );
       },
       itemCount: modules.length,

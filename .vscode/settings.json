@@ -4,6 +4,7 @@
     "dialog",
     "fcad",
     "fn",
+    "recase",
     "riverpod"
   ]
 }

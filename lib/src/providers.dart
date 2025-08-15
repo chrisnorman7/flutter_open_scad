@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_open_scad/flutter_open_scad.dart';
+import 'package:flutter_open_scad/src/json/project_module.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,4 +31,39 @@ ProjectContext project(final Ref ref, final String filename) {
     file: file,
     project: Project.fromJson(json as Map<String, dynamic>),
   );
+}
+
+/// Provide a single module.
+@riverpod
+ProjectModule projectModule(
+  final Ref ref,
+  final String projectFilename,
+  final String moduleId,
+) {
+  final projectContext = ref.watch(projectProvider(projectFilename));
+  return projectContext.project.modules.firstWhere(
+    (final module) => module.id == moduleId,
+  );
+}
+
+/// Provide all shapes in a given module.
+@riverpod
+List<Shape> moduleShapes(
+  final Ref ref,
+  final String projectFilename,
+  final String moduleId,
+) {
+  final module = ref.watch(projectModuleProvider(projectFilename, moduleId));
+  return module.shapes;
+}
+
+/// Provide all variables for a given module.
+@riverpod
+List<ModuleVariable> moduleVariables(
+  final Ref ref,
+  final String projectFilename,
+  final String moduleId,
+) {
+  final module = ref.watch(projectModuleProvider(projectFilename, moduleId));
+  return module.variables;
 }
