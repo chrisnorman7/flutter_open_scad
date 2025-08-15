@@ -31,7 +31,7 @@ Future<void> createProject(final WidgetRef ref) async {
   if (filename == null) {
     return;
   }
-  final project = Project();
+  final project = Project(modules: []);
   final String filePath;
   if (path.extension(filename) != '.json') {
     filePath = '$filename.json';
@@ -83,3 +83,6 @@ Future<void> openProject(final WidgetRef ref) async {
   await openFiles.save();
   ref.invalidate(openFilesProvider);
 }
+
+/// The title for delete confirmation dialogues.
+const confirmDelete = 'Delete Confirmation';

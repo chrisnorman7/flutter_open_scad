@@ -7,13 +7,14 @@ part 'project.g.dart';
 @JsonSerializable()
 class Project {
   /// Create an instance.
-  Project({this.fa = 1, this.fs = 0.5, this.fn = 0}) : modules = [];
+  Project({required this.modules, this.fa = 1, this.fs = 0.5, this.fn = 0});
 
   /// Create an instance from a JSON object.
   factory Project.fromJson(final Map<String, dynamic> json) =>
       _$ProjectFromJson(json);
 
   /// The modules in this project.
+  @JsonKey(defaultValue: [])
   final List<ProjectModule> modules;
 
   /// The value of $fa.
