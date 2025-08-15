@@ -33,8 +33,8 @@ Future<void> createProject(final WidgetRef ref) async {
   }
   final project = Project(modules: []);
   final String filePath;
-  if (path.extension(filename) != '.json') {
-    filePath = '$filename.json';
+  if (path.extension(filename) != projectFileExtension) {
+    filePath = '$filename$projectFileExtension';
   } else {
     filePath = filename;
   }
