@@ -296,6 +296,93 @@ final class ModuleShapesFamily extends $Family
   String toString() => r'moduleShapesProvider';
 }
 
+/// Provide a single shape.
+@ProviderFor(moduleShape)
+const moduleShapeProvider = ModuleShapeFamily._();
+
+/// Provide a single shape.
+final class ModuleShapeProvider extends $FunctionalProvider<Shape, Shape, Shape>
+    with $Provider<Shape> {
+  /// Provide a single shape.
+  const ModuleShapeProvider._({
+    required ModuleShapeFamily super.from,
+    required (String, String, String) super.argument,
+  }) : super(
+         retry: null,
+         name: r'moduleShapeProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$moduleShapeHash();
+
+  @override
+  String toString() {
+    return r'moduleShapeProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<Shape> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Shape create(Ref ref) {
+    final argument = this.argument as (String, String, String);
+    return moduleShape(ref, argument.$1, argument.$2, argument.$3);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Shape value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Shape>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ModuleShapeProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$moduleShapeHash() => r'a0a1825465d10a8d5a880f5fec9d103db31225e7';
+
+/// Provide a single shape.
+final class ModuleShapeFamily extends $Family
+    with $FunctionalFamilyOverride<Shape, (String, String, String)> {
+  const ModuleShapeFamily._()
+    : super(
+        retry: null,
+        name: r'moduleShapeProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provide a single shape.
+  ModuleShapeProvider call(
+    String projectFilename,
+    String moduleId,
+    String shapeId,
+  ) => ModuleShapeProvider._(
+    argument: (projectFilename, moduleId, shapeId),
+    from: this,
+  );
+
+  @override
+  String toString() => r'moduleShapeProvider';
+}
+
 /// Provide all variables for a given module.
 @ProviderFor(moduleVariables)
 const moduleVariablesProvider = ModuleVariablesFamily._();

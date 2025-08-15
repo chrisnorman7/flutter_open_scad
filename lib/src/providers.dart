@@ -57,6 +57,18 @@ List<Shape> moduleShapes(
   return module.shapes;
 }
 
+/// Provide a single shape.
+@riverpod
+Shape moduleShape(
+  final Ref ref,
+  final String projectFilename,
+  final String moduleId,
+  final String shapeId,
+) {
+  final shapes = ref.watch(moduleShapesProvider(projectFilename, moduleId));
+  return shapes.firstWhere((final shape) => shape.id == shapeId);
+}
+
 /// Provide all variables for a given module.
 @riverpod
 List<ModuleVariable> moduleVariables(

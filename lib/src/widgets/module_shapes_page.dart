@@ -55,7 +55,58 @@ class ModuleShapesPage extends ConsumerWidget {
           ],
           autofocus: index == 0,
           title: Text(shape.type.name.sentenceCase),
-          onTap: () {},
+          onTap: () => context.pushWidgetBuilder((_) {
+            switch (shape.type) {
+              case ShapeType.circle:
+                return EditCircleScreen(
+                  projectFilename: projectFilename,
+                  moduleId: moduleId,
+                  shapeId: shape.id,
+                );
+              case ShapeType.square:
+                return EditSquareScreen(
+                  projectFilename: projectFilename,
+                  moduleId: moduleId,
+                  shapeId: shape.id,
+                );
+              case ShapeType.cube:
+                return EditCubeScreen(
+                  projectFilename: projectFilename,
+                  moduleId: moduleId,
+                  shapeId: shape.id,
+                );
+              case ShapeType.cylinder:
+                return EditCylinderScreen(
+                  projectFilename: projectFilename,
+                  moduleId: moduleId,
+                  shapeId: shape.id,
+                );
+              case ShapeType.sphere:
+                return EditSphereScreen(
+                  projectFilename: projectFilename,
+                  moduleId: moduleId,
+                  shapeId: shape.id,
+                );
+              case ShapeType.polygon:
+                return EditPolygonScreen(
+                  projectFilename: projectFilename,
+                  moduleId: moduleId,
+                  shapeId: shape.id,
+                );
+              case ShapeType.polyhedron:
+                return EditPolyhedronScreen(
+                  projectFilename: projectFilename,
+                  moduleId: moduleId,
+                  shapeId: shape.id,
+                );
+              case ShapeType.module:
+                return EditModuleReferenceScreen(
+                  projectFilename: projectFilename,
+                  moduleId: moduleId,
+                  shapeId: shape.id,
+                );
+            }
+          }),
         );
       },
       itemCount: shapes.length,
