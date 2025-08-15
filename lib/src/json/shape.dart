@@ -1,4 +1,3 @@
-import 'package:flutter_open_scad/src/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'shape.g.dart';
@@ -25,13 +24,16 @@ enum ShapeType {
 
   /// A polyhedron.
   polyhedron,
+
+  /// Another module in the current project.
+  module,
 }
 
 /// A shape in a model.
 @JsonSerializable()
 class Shape {
   /// Create an instance.
-  Shape({required this.type, this.arguments = const {}}) : id = newId();
+  Shape({required this.id, required this.type, this.arguments = const {}});
 
   /// Create an instance from a JSON object.
   factory Shape.fromJson(final Map<String, dynamic> json) =>

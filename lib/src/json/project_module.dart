@@ -16,9 +16,11 @@ enum ModuleThickness {
 @JsonSerializable()
 class ProjectModule {
   /// Create an instance.
-  ProjectModule({this.name = 'Untitled module', final List<Shape>? shapes})
-    : id = newId(),
-      shapes = shapes ?? [];
+  ProjectModule({
+    required this.id,
+    required this.shapes,
+    this.name = 'Untitled module',
+  });
 
   /// Create an instance from a JSON object.
   factory ProjectModule.fromJson(final Map<String, dynamic> json) =>

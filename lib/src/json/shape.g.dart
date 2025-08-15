@@ -7,11 +7,13 @@ part of 'shape.dart';
 // **************************************************************************
 
 Shape _$ShapeFromJson(Map<String, dynamic> json) => Shape(
+  id: json['id'] as String,
   type: $enumDecode(_$ShapeTypeEnumMap, json['type']),
   arguments: json['arguments'] as Map<String, dynamic>? ?? const {},
 );
 
 Map<String, dynamic> _$ShapeToJson(Shape instance) => <String, dynamic>{
+  'id': instance.id,
   'type': _$ShapeTypeEnumMap[instance.type]!,
   'arguments': instance.arguments,
 };
@@ -24,4 +26,5 @@ const _$ShapeTypeEnumMap = {
   ShapeType.sphere: 'sphere',
   ShapeType.polygon: 'polygon',
   ShapeType.polyhedron: 'polyhedron',
+  ShapeType.module: 'module',
 };

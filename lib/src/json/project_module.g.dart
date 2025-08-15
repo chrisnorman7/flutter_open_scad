@@ -8,11 +8,16 @@ part of 'project_module.dart';
 
 ProjectModule _$ProjectModuleFromJson(Map<String, dynamic> json) =>
     ProjectModule(
-      name: json['name'] as String? ?? 'Untitled module',
-      shapes: (json['shapes'] as List<dynamic>?)
-          ?.map((e) => Shape.fromJson(e as Map<String, dynamic>))
+      id: json['id'] as String,
+      shapes: (json['shapes'] as List<dynamic>)
+          .map((e) => Shape.fromJson(e as Map<String, dynamic>))
           .toList(),
+      name: json['name'] as String? ?? 'Untitled module',
     );
 
 Map<String, dynamic> _$ProjectModuleToJson(ProjectModule instance) =>
-    <String, dynamic>{'name': instance.name, 'shapes': instance.shapes};
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'shapes': instance.shapes,
+    };
