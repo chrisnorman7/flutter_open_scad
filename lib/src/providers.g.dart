@@ -45,7 +45,7 @@ final class OpenFilesProvider
   }
 }
 
-String _$openFilesHash() => r'bd4976c52ff6523f323e85d2039a11d715a6e48b';
+String _$openFilesHash() => r'88fdfb1c415f746ea2660791e6b3dba6cac6a517';
 
 /// Provide a single project.
 @ProviderFor(project)

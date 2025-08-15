@@ -14,7 +14,10 @@ const openFilesKey = 'flutter_open_scad_open_files';
 @riverpod
 Future<OpenFiles> openFiles(final Ref ref) async {
   final preferences = SharedPreferencesAsync();
-  return OpenFiles((await preferences.getStringList(openFilesKey)) ?? []);
+  final filenames = (await preferences.getStringList(openFilesKey)) ?? [];
+  return OpenFiles(
+    filenames.where((final filename) => File(filename).existsSync()).toList(),
+  );
 }
 
 /// Provide a single project.
