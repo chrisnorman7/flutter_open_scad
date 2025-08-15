@@ -12,6 +12,9 @@ ProjectModule _$ProjectModuleFromJson(Map<String, dynamic> json) =>
       shapes: (json['shapes'] as List<dynamic>)
           .map((e) => Shape.fromJson(e as Map<String, dynamic>))
           .toList(),
+      variables: (json['variables'] as List<dynamic>)
+          .map((e) => ModuleVariable.fromJson(e as Map<String, dynamic>))
+          .toList(),
       name: json['name'] as String? ?? 'Untitled module',
     );
 
@@ -20,4 +23,5 @@ Map<String, dynamic> _$ProjectModuleToJson(ProjectModule instance) =>
       'id': instance.id,
       'name': instance.name,
       'shapes': instance.shapes,
+      'variables': instance.variables,
     };

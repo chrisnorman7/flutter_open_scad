@@ -19,6 +19,7 @@ class ProjectModule {
   ProjectModule({
     required this.id,
     required this.shapes,
+    required this.variables,
     this.name = 'Untitled module',
   });
 
@@ -34,6 +35,9 @@ class ProjectModule {
 
   /// The shapes in this module.
   final List<Shape> shapes;
+
+  /// The variables available in this module.
+  final List<ModuleVariable> variables;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ProjectModuleToJson(this);

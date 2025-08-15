@@ -16,7 +16,9 @@ class NewModulePerformableAction extends PerformableAction {
          invoke: () {
            final projectContext = ref.read(projectProvider(filename));
            final project = projectContext.project;
-           project.modules.add(ProjectModule(id: newId(), shapes: []));
+           project.modules.add(
+             ProjectModule(id: newId(), shapes: [], variables: []),
+           );
            projectContext.save(ref);
          },
          activator: CrossPlatformSingleActivator(LogicalKeyboardKey.keyM),

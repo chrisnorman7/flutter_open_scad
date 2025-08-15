@@ -6,7 +6,7 @@ part 'module_arguments.g.dart';
 @JsonSerializable()
 class ModuleArguments {
   /// Create an instance.
-  const ModuleArguments({required this.id});
+  const ModuleArguments({required this.id, required this.arguments});
 
   /// Create an instance from a JSON object.
   factory ModuleArguments.fromJson(final Map<String, dynamic> json) =>
@@ -14,6 +14,9 @@ class ModuleArguments {
 
   /// The ID of the model.
   final String id;
+
+  /// The arguments for the module.
+  final Map<String, double> arguments;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ModuleArgumentsToJson(this);
