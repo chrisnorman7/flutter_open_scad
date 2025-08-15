@@ -35,9 +35,11 @@ class MainScreen extends ConsumerWidget {
           return const SelectProjectScreen();
         } else if (files.length == 1) {
           final file = files.single;
+          final filename = file.path;
           final actionsContext = PerformableActionsContext.fromActions([
             ...commonActions,
-            CloseProjectPerformableAction(ref: ref, filename: file.path),
+            NewModulePerformableAction(ref: ref, filename: filename),
+            CloseProjectPerformableAction(ref: ref, filename: filename),
           ]);
           return CallbackShortcuts(
             bindings: actionsContext.bindings,
@@ -50,9 +52,11 @@ class MainScreen extends ConsumerWidget {
         }
         return TabbedScaffold(
           tabs: files.map((final file) {
+            final filename = file.path;
             final actionsContext = PerformableActionsContext.fromActions([
               ...commonActions,
-              CloseProjectPerformableAction(ref: ref, filename: file.path),
+              NewModulePerformableAction(ref: ref, filename: filename),
+              CloseProjectPerformableAction(ref: ref, filename: filename),
             ]);
             return TabbedScaffoldTab(
               actions: [MenuButton(menuChildren: actionsContext.menuChildren)],
