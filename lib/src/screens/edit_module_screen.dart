@@ -110,7 +110,7 @@ class EditModuleScreen extends ConsumerWidget {
       child: TabbedScaffold(
         tabs: [
           TabbedScaffoldTab(
-            title: 'Shapes',
+            title: '${module.name} Shapes',
             icon: const Text('The shapes in this module'),
             child: CallbackShortcuts(
               bindings: newShapeActions.bindings,
@@ -132,7 +132,7 @@ class EditModuleScreen extends ConsumerWidget {
             ),
           ),
           TabbedScaffoldTab(
-            title: 'Variables',
+            title: '${module.name} Variables',
             icon: const Text('The variables in this project'),
             child: CommonShortcuts(
               newCallback: () => _createVariable(ref),
