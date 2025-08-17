@@ -27,9 +27,11 @@ class ModuleVariablesPage extends ConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final projectContext = ref.watch(projectProvider(projectFilename));
-    final variables = ref.watch(
-      moduleVariablesProvider(projectFilename, moduleId),
-    );
+    final variables =
+        ref.watch(moduleVariablesProvider(projectFilename, moduleId))..sort(
+          (final a, final b) =>
+              a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+        );
     if (variables.isEmpty) {
       return const CenterText(
         text: 'This module has no variables.',
