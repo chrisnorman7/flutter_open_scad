@@ -95,13 +95,14 @@ class EditCircleScreen extends ConsumerWidget {
               ),
               SaveButton(
                 onPressed: () {
-                  formKey.currentState?.saveAndValidate();
-                  final json =
-                      formKey.currentState?.value ?? arguments.toJson();
-                  final testArguments = CircleArguments.fromJson(json);
-                  shape.arguments = testArguments.toJson();
-                  projectContext.save(ref);
-                  context.pop();
+                  if (formKey.currentState?.saveAndValidate() ?? false) {
+                    final json =
+                        formKey.currentState?.value ?? arguments.toJson();
+                    final testArguments = CircleArguments.fromJson(json);
+                    shape.arguments = testArguments.toJson();
+                    projectContext.save(ref);
+                    context.pop();
+                  }
                 },
               ),
             ],
