@@ -5,9 +5,7 @@ import 'package:backstreets_widgets/extensions.dart';
 import 'package:backstreets_widgets/shortcuts.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_open_scad/src/json/project.dart';
-import 'package:flutter_open_scad/src/project_context.dart';
-import 'package:flutter_open_scad/src/providers.dart';
+import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -91,3 +89,6 @@ const confirmDelete = 'Delete Confirmation';
 
 /// The hotkey for renaming things.
 final renameShortcut = CrossPlatformSingleActivator(LogicalKeyboardKey.keyR);
+
+/// A list of 2 dimensional shape types.
+const shapeTypes2d = [ShapeType.circle, ShapeType.square, ShapeType.polygon];

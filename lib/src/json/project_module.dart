@@ -45,7 +45,7 @@ class ProjectModule {
   /// Returns `true` if all the shapes in [shapes] are circles or squares.
   ModuleThickness get thickness {
     for (final shape in shapes) {
-      if (shape.type != ShapeType.circle && shape.type != ShapeType.square) {
+      if (!shapeTypes2d.contains(shape.type)) {
         return ModuleThickness.threeDimensional;
       }
     }
