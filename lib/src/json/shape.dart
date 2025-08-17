@@ -56,6 +56,9 @@ class Shape {
   /// The name of this shape.
   String? name;
 
+  /// Get the name of this shape.
+  String getName() => name ?? type.name;
+
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ShapeToJson(this);
 }

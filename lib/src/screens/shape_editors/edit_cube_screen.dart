@@ -29,6 +29,7 @@ class EditCubeScreen extends ConsumerWidget {
   /// Build a widget.
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
+    final projectContext = ref.watch(projectProvider(projectFilename));
     final shape = ref.watch(
       moduleShapeProvider(projectFilename, moduleId, shapeId),
     );
@@ -42,7 +43,7 @@ class EditCubeScreen extends ConsumerWidget {
     final formKey = GlobalKey<FormBuilderState>();
     return Cancel(
       child: SimpleScaffold(
-        title: 'Edit ${shape.name ?? "Cube"}',
+        title: 'Edit ${shape.getName()}',
         body: FormBuilder(
           key: formKey,
           child: SingleChildScrollView(
@@ -76,6 +77,7 @@ class EditCubeScreen extends ConsumerWidget {
                           formKey.currentState?.value ?? arguments.toJson();
                       final testArguments = CubeArguments.fromJson(json);
                       shape.arguments = testArguments.toJson();
+                      projectContext.save(ref);
                       context.pop();
                     }
                   },

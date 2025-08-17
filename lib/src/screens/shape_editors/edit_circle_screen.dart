@@ -6,7 +6,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:recase/recase.dart';
 
 /// A screen for editing a circle.
 class EditCircleScreen extends ConsumerWidget {
@@ -43,10 +42,9 @@ class EditCircleScreen extends ConsumerWidget {
     );
     final arguments = CircleArguments.fromJson(shape.arguments);
     final formKey = GlobalKey<FormBuilderState>();
-    const shapeTypes = SizeType.values;
     return Cancel(
       child: SimpleScaffold(
-        title: 'Edit ${shape.name ?? "Circle"}',
+        title: 'Edit ${shape.getName()}',
         body: FormBuilder(
           key: formKey,
           child: SingleChildScrollView(
@@ -58,18 +56,11 @@ class EditCircleScreen extends ConsumerWidget {
                   labelText: 'Size',
                   autofocus: true,
                 ),
-                FormBuilderDropdown(
+                EnumFormField(
                   name: 'sizeType',
-                  items: [
-                    for (var i = 0; i < shapeTypes.length; i++)
-                      DropdownMenuItem(
-                        value: shapeTypes[i],
-                        child: Text(shapeTypes[i].name.sentenceCase),
-                      ),
-                  ],
-                  decoration: const InputDecoration(labelText: 'Type of Size'),
+                  values: SizeType.values,
                   initialValue: arguments.sizeType,
-                  valueTransformer: (final value) => value?.name,
+                  labelText: 'Type of size',
                 ),
                 DoubleFormField(
                   name: 'fa',

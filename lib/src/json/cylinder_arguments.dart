@@ -43,7 +43,7 @@ class CylinderArguments {
   bool centre;
 
   /// The size of the bottom circular face.
-  double? size1;
+  double size1;
 
   /// The type of [size1].
   SizeType size1Type;
