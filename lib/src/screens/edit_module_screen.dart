@@ -70,10 +70,11 @@ class EditModuleScreen extends ConsumerWidget {
                     ShapeType.sphere => SphereArguments().toJson(),
                     ShapeType.polygon => PolygonArguments(
                       points: [
-                        PolygonPoint(),
-                        PolygonPoint(y: 3),
-                        PolygonPoint(x: 3),
+                        PolygonPoint(id: newId()),
+                        PolygonPoint(id: newId(), y: 3),
+                        PolygonPoint(id: newId(), x: 3),
                       ],
+                      paths: [],
                     ).toJson(),
                     ShapeType.polyhedron => PolyhedronArguments(
                       points: [

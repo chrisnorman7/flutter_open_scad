@@ -1,4 +1,5 @@
 import 'package:backstreets_widgets/screens.dart';
+import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,6 +36,55 @@ class EditPolygonScreen extends ConsumerWidget {
       // ignore: lines_longer_than_80_chars
       'The shape was not a polygon: Project filename: $projectFilename, module ID: ${moduleId}Id, shape ID: $shapeId, type ${shapeType.name}',
     );
-    return const SimpleScaffold(title: 'Edit Polygon', body: NotImplemented());
+    final arguments = PolygonArguments.fromJson(shape.arguments);
+    final points = arguments.points;
+    final paths = arguments.paths;
+    return Cancel(
+      child: TabbedScaffold(
+        tabs: [
+          TabbedScaffoldTab(
+            title: 'Points',
+            icon: const Text('The points in this polygon'),
+            child: ListView.builder(
+              itemBuilder: (final context, final index) {
+                final point = points[index];
+                return PerformableActionsListTile(
+                  actions: const [],
+                  autofocus: index == 0,
+                  title: Text(point.name ?? 'Point ${index + 1}'),
+                  subtitle: Text('${point.x}, ${point.y}'),
+                  onTap: () {},
+                );
+              },
+              itemCount: points.length,
+              shrinkWrap: true,
+            ),
+          ),
+          TabbedScaffoldTab(
+            title: 'Paths',
+            icon: const Text('The paths in this polygon'),
+            child: paths.isEmpty
+                ? const CenterText(
+                    text: 'No path have been created.',
+                    autofocus: true,
+                  )
+                : ListView.builder(
+                    itemBuilder: (final context, final index) {
+                      final path = paths[index];
+                      return PerformableActionsListTile(
+                        actions: const [],
+                        autofocus: index == 0,
+                        title: Text(path.name),
+                        subtitle: Text('${path.pointIndexes.length}'),
+                        onTap: () {},
+                      );
+                    },
+                    itemCount: paths.length,
+                    shrinkWrap: true,
+                  ),
+          ),
+        ],
+      ),
+    );
   }
 }
