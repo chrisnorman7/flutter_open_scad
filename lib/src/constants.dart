@@ -91,4 +91,4 @@ const confirmDelete = 'Delete Confirmation';
 final renameShortcut = CrossPlatformSingleActivator(LogicalKeyboardKey.keyR);
 
 /// A list of 2 dimensional shape types.
-const shapeTypes2d = [ShapeType.circle, ShapeType.square, ShapeType.polygon];
+const shapeTypes2d = [ShapeType.circle, ShapeType.square];

@@ -19,12 +19,6 @@ enum ShapeType {
   /// A sphere.
   sphere,
 
-  /// A polygon.
-  polygon,
-
-  /// A polyhedron.
-  polyhedron,
-
   /// Another module in the current project.
   module,
 }

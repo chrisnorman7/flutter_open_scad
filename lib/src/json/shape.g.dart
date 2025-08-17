@@ -26,7 +26,5 @@ const _$ShapeTypeEnumMap = {
   ShapeType.cube: 'cube',
   ShapeType.cylinder: 'cylinder',
   ShapeType.sphere: 'sphere',
-  ShapeType.polygon: 'polygon',
-  ShapeType.polyhedron: 'polyhedron',
   ShapeType.module: 'module',
 };

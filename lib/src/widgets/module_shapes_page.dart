@@ -104,18 +104,6 @@ class ModuleShapesPage extends ConsumerWidget {
                   moduleId: moduleId,
                   shapeId: shape.id,
                 );
-              case ShapeType.polygon:
-                return EditPolygonScreen(
-                  projectFilename: projectFilename,
-                  moduleId: moduleId,
-                  shapeId: shape.id,
-                );
-              case ShapeType.polyhedron:
-                return EditPolyhedronScreen(
-                  projectFilename: projectFilename,
-                  moduleId: moduleId,
-                  shapeId: shape.id,
-                );
               case ShapeType.module:
                 return EditModuleReferenceScreen(
                   projectFilename: projectFilename,
