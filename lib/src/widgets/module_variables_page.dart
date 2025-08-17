@@ -3,7 +3,6 @@ import 'package:backstreets_widgets/screens.dart';
 import 'package:backstreets_widgets/shortcuts.dart';
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -56,7 +55,7 @@ class ModuleVariablesPage extends ConsumerWidget {
                   title: 'Rename Variable',
                 ),
               ),
-              activator: CrossPlatformSingleActivator(LogicalKeyboardKey.keyR),
+              activator: renameShortcut,
             ),
             PerformableAction(
               name: 'Delete Variable',

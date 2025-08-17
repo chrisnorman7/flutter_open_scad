@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:backstreets_widgets/extensions.dart';
+import 'package:backstreets_widgets/shortcuts.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_open_scad/src/json/project.dart';
 import 'package:flutter_open_scad/src/project_context.dart';
 import 'package:flutter_open_scad/src/providers.dart';
@@ -86,3 +88,6 @@ Future<void> openProject(final WidgetRef ref) async {
 
 /// The title for delete confirmation dialogues.
 const confirmDelete = 'Delete Confirmation';
+
+/// The hotkey for renaming things.
+final renameShortcut = CrossPlatformSingleActivator(LogicalKeyboardKey.keyR);

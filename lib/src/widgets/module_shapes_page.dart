@@ -1,4 +1,5 @@
 import 'package:backstreets_widgets/extensions.dart';
+import 'package:backstreets_widgets/screens.dart';
 import 'package:backstreets_widgets/shortcuts.dart';
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,19 @@ class ModuleShapesPage extends ConsumerWidget {
         return PerformableActionsListTile(
           actions: [
             PerformableAction(
+              name: 'Rename Shape',
+              invoke: () => context.pushWidgetBuilder(
+                (final innerContext) => GetText(
+                  onDone: (final value) {
+                    innerContext.pop();
+                    shape.name = value.isEmpty ? null : value;
+                    projectContext.save(ref);
+                  },
+                ),
+              ),
+              activator: renameShortcut,
+            ),
+            PerformableAction(
               name: 'Delete Shape',
               invoke: () => context.showConfirmMessage(
                 message: 'Are you sure you want to delete this shape?',
@@ -54,7 +68,10 @@ class ModuleShapesPage extends ConsumerWidget {
             ),
           ],
           autofocus: index == 0,
-          title: Text(shape.type.name.sentenceCase),
+          title: Text(shape.name ?? shape.type.name.sentenceCase),
+          subtitle: shape.name == null
+              ? null
+              : Text(shape.type.name.sentenceCase),
           onTap: () => context.pushWidgetBuilder((_) {
             switch (shape.type) {
               case ShapeType.circle:

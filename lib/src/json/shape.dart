@@ -33,7 +33,12 @@ enum ShapeType {
 @JsonSerializable()
 class Shape {
   /// Create an instance.
-  Shape({required this.id, required this.type, this.arguments = const {}});
+  Shape({
+    required this.id,
+    required this.type,
+    this.arguments = const {},
+    this.name,
+  });
 
   /// Create an instance from a JSON object.
   factory Shape.fromJson(final Map<String, dynamic> json) =>
@@ -47,6 +52,9 @@ class Shape {
 
   /// The arguments for this shape.
   Map<String, dynamic> arguments;
+
+  /// The name of this shape.
+  String? name;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ShapeToJson(this);
