@@ -58,6 +58,14 @@ class ModuleVariablesPage extends ConsumerWidget {
               ),
               activator: CrossPlatformSingleActivator(LogicalKeyboardKey.keyR),
             ),
+            PerformableAction(
+              name: 'Delete Variable',
+              invoke: () {
+                variables.removeWhere((final v) => v.id == variable.id);
+                projectContext.save(ref);
+              },
+              activator: deleteShortcut,
+            ),
           ],
           autofocus: index == 0,
           title: Text(variable.name),
