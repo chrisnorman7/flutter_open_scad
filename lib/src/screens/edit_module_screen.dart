@@ -134,13 +134,28 @@ class EditModuleScreen extends ConsumerWidget {
           TabbedScaffoldTab(
             title: 'Variables',
             icon: const Text('The variables in this project'),
-            child: ModuleVariablesPage(
-              projectFilename: projectFilename,
-              moduleId: moduleId,
+            child: CommonShortcuts(
+              newCallback: () => _createVariable(ref),
+              child: ModuleVariablesPage(
+                projectFilename: projectFilename,
+                moduleId: moduleId,
+              ),
+            ),
+            floatingActionButton: NewButton(
+              onPressed: () => _createVariable(ref),
+              tooltip: 'New Variable',
             ),
           ),
         ],
       ),
     );
+  }
+
+  /// Create a new variable.
+  void _createVariable(final WidgetRef ref) {
+    final module = ref.read(projectModuleProvider(projectFilename, moduleId));
+    final variable = ModuleVariable(id: newId());
+    module.variables.add(variable);
+    ref.read(projectProvider(projectFilename)).save(ref);
   }
 }
