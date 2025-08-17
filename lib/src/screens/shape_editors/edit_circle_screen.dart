@@ -44,68 +44,70 @@ class EditCircleScreen extends ConsumerWidget {
     final arguments = CircleArguments.fromJson(shape.arguments);
     final formKey = GlobalKey<FormBuilderState>();
     const shapeTypes = SizeType.values;
-    return SimpleScaffold(
-      title: 'Edit ${shape.name ?? "Circle"}',
-      body: FormBuilder(
-        key: formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              DoubleFormField(
-                name: 'size',
-                initialValue: arguments.size,
-                labelText: 'Size',
-                autofocus: true,
-              ),
-              FormBuilderDropdown(
-                name: 'sizeType',
-                items: [
-                  for (var i = 0; i < shapeTypes.length; i++)
-                    DropdownMenuItem(
-                      value: shapeTypes[i],
-                      child: Text(shapeTypes[i].name.sentenceCase),
-                    ),
-                ],
-                decoration: const InputDecoration(labelText: 'Type of Size'),
-                initialValue: arguments.sizeType,
-                valueTransformer: (final value) => value?.name,
-              ),
-              DoubleFormField(
-                name: 'fa',
-                initialValue: arguments.fa,
-                labelText: r'$fa',
-              ),
-              DoubleFormField(
-                name: 'fs',
-                initialValue: arguments.fs,
-                labelText: r'$fs',
-              ),
-              FormBuilderTextField(
-                name: 'fn',
-                decoration: const InputDecoration(labelText: r'$fn'),
-                initialValue: '${arguments.fn}',
-                keyboardType: TextInputType.number,
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.min(0),
-                ]),
-                valueTransformer: (final value) => value == null
-                    ? arguments.fn
-                    : int.tryParse(value) ?? arguments.fn,
-              ),
-              SaveButton(
-                onPressed: () {
-                  if (formKey.currentState?.saveAndValidate() ?? false) {
-                    final json =
-                        formKey.currentState?.value ?? arguments.toJson();
-                    final testArguments = CircleArguments.fromJson(json);
-                    shape.arguments = testArguments.toJson();
-                    projectContext.save(ref);
-                    context.pop();
-                  }
-                },
-              ),
-            ],
+    return Cancel(
+      child: SimpleScaffold(
+        title: 'Edit ${shape.name ?? "Circle"}',
+        body: FormBuilder(
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                DoubleFormField(
+                  name: 'size',
+                  initialValue: arguments.size,
+                  labelText: 'Size',
+                  autofocus: true,
+                ),
+                FormBuilderDropdown(
+                  name: 'sizeType',
+                  items: [
+                    for (var i = 0; i < shapeTypes.length; i++)
+                      DropdownMenuItem(
+                        value: shapeTypes[i],
+                        child: Text(shapeTypes[i].name.sentenceCase),
+                      ),
+                  ],
+                  decoration: const InputDecoration(labelText: 'Type of Size'),
+                  initialValue: arguments.sizeType,
+                  valueTransformer: (final value) => value?.name,
+                ),
+                DoubleFormField(
+                  name: 'fa',
+                  initialValue: arguments.fa,
+                  labelText: r'$fa',
+                ),
+                DoubleFormField(
+                  name: 'fs',
+                  initialValue: arguments.fs,
+                  labelText: r'$fs',
+                ),
+                FormBuilderTextField(
+                  name: 'fn',
+                  decoration: const InputDecoration(labelText: r'$fn'),
+                  initialValue: '${arguments.fn}',
+                  keyboardType: TextInputType.number,
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.min(0),
+                  ]),
+                  valueTransformer: (final value) => value == null
+                      ? arguments.fn
+                      : int.tryParse(value) ?? arguments.fn,
+                ),
+                SaveButton(
+                  onPressed: () {
+                    if (formKey.currentState?.saveAndValidate() ?? false) {
+                      final json =
+                          formKey.currentState?.value ?? arguments.toJson();
+                      final testArguments = CircleArguments.fromJson(json);
+                      shape.arguments = testArguments.toJson();
+                      projectContext.save(ref);
+                      context.pop();
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
