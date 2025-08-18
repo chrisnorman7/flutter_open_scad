@@ -74,7 +74,8 @@ class EditModuleReferenceScreen extends ConsumerWidget {
             (final variable) => ListTile(
               title: Text(variable.name),
               subtitle: Text(
-                '${arguments.arguments[variable.id] ?? variable.defaultValue}',
+                // ignore: lines_longer_than_80_chars
+                '${arguments.arguments[variable.id] ?? currentModule.getVariableValue(variable)}',
               ),
               onTap: () => context.pushWidgetBuilder(
                 (final innerContext) => GetText(
@@ -85,8 +86,9 @@ class EditModuleReferenceScreen extends ConsumerWidget {
                   },
                   labelText: variable.name,
                   text:
-                      arguments.arguments[variable.id]?.toStringAsFixed(5) ??
-                      variable.defaultValue.toStringAsFixed(5),
+                      (arguments.arguments[variable.id] ??
+                              currentModule.getVariableValue(variable))
+                          .toStringAsFixed(5),
                   title: 'Set Variable Value',
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(),

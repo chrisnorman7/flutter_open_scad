@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:backstreets_widgets/extensions.dart';
 import 'package:backstreets_widgets/shortcuts.dart';
@@ -92,3 +93,9 @@ final renameShortcut = CrossPlatformSingleActivator(LogicalKeyboardKey.keyR);
 
 /// A list of 2 dimensional shape types.
 const shapeTypes2d = [ShapeType.circle, ShapeType.square];
+
+/// The built in variables.
+final Map<String, double> builtinVariables = {'pi': pi};
+
+/// Used to show an unknown value.
+const unknownValue = '!! UNKNOWN !!';

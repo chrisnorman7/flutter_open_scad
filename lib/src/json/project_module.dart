@@ -1,5 +1,6 @@
 import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:recase/recase.dart';
 
 part 'project_module.g.dart';
 
@@ -51,4 +52,22 @@ class ProjectModule {
     }
     return ModuleThickness.flat;
   }
+
+  /// Get all variables available in this module.
+  ///
+  /// This list includes [builtinVariables] and [variables].
+  List<ModuleVariable> get availableVariables => [
+    ...variables,
+    ...builtinVariables.entries.map(
+      (final e) => ModuleVariable(
+        id: e.key,
+        firstValue: e.value,
+        name: e.key.sentenceCase,
+      ),
+    ),
+  ];
+
+  /// Get the value of [variable].
+  double getVariableValue(final ModuleVariable variable) =>
+      variable.getValue(availableVariables);
 }

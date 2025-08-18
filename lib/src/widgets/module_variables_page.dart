@@ -27,6 +27,7 @@ class ModuleVariablesPage extends ConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final projectContext = ref.watch(projectProvider(projectFilename));
+    final module = ref.watch(projectModuleProvider(projectFilename, moduleId));
     final variables =
         ref.watch(moduleVariablesProvider(projectFilename, moduleId))..sort(
           (final a, final b) =>
@@ -70,17 +71,61 @@ class ModuleVariablesPage extends ConsumerWidget {
           ],
           autofocus: index == 0,
           title: Text(variable.name),
-          subtitle: Text(variable.defaultValue.toStringAsFixed(5)),
+          subtitle: Text(() {
+            final firstVariableId = variable.firstVariableId;
+            final secondVariableId = variable.secondVariableId;
+            final variable1 = firstVariableId == null
+                ? null
+                : variables.firstWhere((final v) => v.id == firstVariableId);
+            final variable2 = secondVariableId == null
+                ? null
+                : variables.firstWhere((final v) => v.id == secondVariableId);
+            final x =
+                variable1?.name ??
+                (variable.firstValue?.toStringAsFixed(5) ?? unknownValue);
+            final y =
+                variable2?.name ??
+                (variable.secondValue?.toStringAsFixed(5) ?? unknownValue);
+            switch (variable.operation) {
+              case VariableOperation.verbatim:
+                return x;
+              case VariableOperation.add:
+                return '$x + $y';
+              case VariableOperation.subtract:
+                return '$x - $y';
+              case VariableOperation.multiply:
+                return '$x * $y';
+              case VariableOperation.divide:
+                return '$x / $y';
+              case VariableOperation.power:
+                return '$x ^ $y';
+              case VariableOperation.cos:
+                return 'cos($x)';
+              case VariableOperation.sin:
+                return 'sin($x)';
+              case VariableOperation.tan:
+                return 'tan($x)';
+              case VariableOperation.acos:
+                return 'acos($x)';
+              case VariableOperation.asin:
+                return 'asin($x)';
+              case VariableOperation.atan:
+                return 'atan($x)';
+            }
+          }()),
           onTap: () => context.pushWidgetBuilder(
             (final innerContext) => GetText(
               onDone: (final value) {
                 innerContext.pop();
-                variable.defaultValue =
-                    double.tryParse(value) ?? variable.defaultValue;
+                variable
+                  ..firstValue =
+                      double.tryParse(value) ??
+                      module.getVariableValue(variable)
+                  ..operation = VariableOperation.verbatim;
                 projectContext.save(ref);
               },
-              labelText: 'Default value',
-              text: variable.defaultValue.toStringAsFixed(5),
+              labelText: 'First value',
+              text: module.getVariableValue(variable).toStringAsFixed(5),
               title: 'Default Value',
               validator: FormBuilderValidators.compose([
                 FormBuilderValidators.required(),
