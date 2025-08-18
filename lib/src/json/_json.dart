@@ -3,8 +3,6 @@ export 'cube_arguments.dart';
 export 'cylinder_arguments.dart';
 export 'module_arguments.dart';
 export 'module_variable.dart';
-export 'polygon_arguments.dart';
-export 'polyhedron_arguments.dart';
 export 'project.dart';
 export 'shape.dart';
 export 'size_type.dart';

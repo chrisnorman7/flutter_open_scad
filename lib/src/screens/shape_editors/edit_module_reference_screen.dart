@@ -1,8 +1,10 @@
+import 'package:backstreets_widgets/extensions.dart';
 import 'package:backstreets_widgets/screens.dart';
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 
 /// A screen for editing a module reference.
 class EditModuleReferenceScreen extends ConsumerWidget {
@@ -74,7 +76,24 @@ class EditModuleReferenceScreen extends ConsumerWidget {
               subtitle: Text(
                 '${arguments.arguments[variable.id] ?? variable.defaultValue}',
               ),
-              onTap: () {},
+              onTap: () => context.pushWidgetBuilder(
+                (final innerContext) => GetText(
+                  onDone: (final value) {
+                    innerContext.pop();
+                    arguments.arguments[variable.id] = double.parse(value);
+                    projectContext.save(ref);
+                  },
+                  labelText: variable.name,
+                  text:
+                      arguments.arguments[variable.id]?.toStringAsFixed(5) ??
+                      variable.defaultValue.toStringAsFixed(5),
+                  title: 'Set Variable Value',
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.numeric(),
+                  ]),
+                ),
+              ),
             ),
           ),
         ],

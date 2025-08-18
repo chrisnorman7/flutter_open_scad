@@ -10,12 +10,14 @@ Shape _$ShapeFromJson(Map<String, dynamic> json) => Shape(
   id: json['id'] as String,
   type: $enumDecode(_$ShapeTypeEnumMap, json['type']),
   arguments: json['arguments'] as Map<String, dynamic>? ?? const {},
+  name: json['name'] as String?,
 );
 
 Map<String, dynamic> _$ShapeToJson(Shape instance) => <String, dynamic>{
   'id': instance.id,
   'type': _$ShapeTypeEnumMap[instance.type]!,
   'arguments': instance.arguments,
+  'name': instance.name,
 };
 
 const _$ShapeTypeEnumMap = {
@@ -24,7 +26,5 @@ const _$ShapeTypeEnumMap = {
   ShapeType.cube: 'cube',
   ShapeType.cylinder: 'cylinder',
   ShapeType.sphere: 'sphere',
-  ShapeType.polygon: 'polygon',
-  ShapeType.polyhedron: 'polyhedron',
   ShapeType.module: 'module',
 };

@@ -1,6 +1,7 @@
 export 'src/actions/_actions.dart';
 export 'src/constants.dart';
 export 'src/extensions.dart';
+export 'src/form_fields/_form_fields.dart';
 export 'src/json/_json.dart';
 export 'src/open_files.dart';
 export 'src/project_context.dart';

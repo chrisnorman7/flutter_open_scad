@@ -1,3 +1,4 @@
+import 'package:backstreets_widgets/extensions.dart';
 import 'package:backstreets_widgets/shortcuts.dart';
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/services.dart';
@@ -16,10 +17,15 @@ class NewModulePerformableAction extends PerformableAction {
          invoke: () {
            final projectContext = ref.read(projectProvider(filename));
            final project = projectContext.project;
-           project.modules.add(
-             ProjectModule(id: newId(), shapes: [], variables: []),
-           );
+           final module = ProjectModule(id: newId(), shapes: [], variables: []);
+           project.modules.add(module);
            projectContext.save(ref);
+           ref.context.pushWidgetBuilder(
+             (_) => EditModuleScreen(
+               projectFilename: projectContext.file.path,
+               moduleId: module.id,
+             ),
+           );
          },
          activator: CrossPlatformSingleActivator(LogicalKeyboardKey.keyM),
        );

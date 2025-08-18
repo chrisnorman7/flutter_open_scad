@@ -68,25 +68,6 @@ class EditModuleScreen extends ConsumerWidget {
                     ShapeType.cube => CubeArguments().toJson(),
                     ShapeType.cylinder => CylinderArguments().toJson(),
                     ShapeType.sphere => SphereArguments().toJson(),
-                    ShapeType.polygon => PolygonArguments(
-                      points: [
-                        PolygonPoint(),
-                        PolygonPoint(y: 3),
-                        PolygonPoint(x: 3),
-                      ],
-                    ).toJson(),
-                    ShapeType.polyhedron => PolyhedronArguments(
-                      points: [
-                        PolyhedronPoint(),
-                        PolyhedronPoint(y: 3),
-                        PolyhedronPoint(x: 3, y: 3),
-                        PolyhedronPoint(x: 3),
-                        PolyhedronPoint(z: 3),
-                        PolyhedronPoint(y: 3, z: 3),
-                        PolyhedronPoint(x: 3, y: 3, z: 3),
-                        PolyhedronPoint(x: 3, z: 3),
-                      ],
-                    ).toJson(),
                     ShapeType.module => throw UnimplementedError(),
                   },
                 ),
@@ -100,8 +81,6 @@ class EditModuleScreen extends ConsumerWidget {
             ShapeType.cube => LogicalKeyboardKey.keyU,
             ShapeType.cylinder => LogicalKeyboardKey.keyY,
             ShapeType.sphere => LogicalKeyboardKey.keyP,
-            ShapeType.polygon => LogicalKeyboardKey.keyG,
-            ShapeType.polyhedron => LogicalKeyboardKey.keyH,
             ShapeType.module => LogicalKeyboardKey.keyM,
           }, shift: true),
         ),
@@ -110,7 +89,7 @@ class EditModuleScreen extends ConsumerWidget {
       child: TabbedScaffold(
         tabs: [
           TabbedScaffoldTab(
-            title: 'Shapes',
+            title: '${module.name} Shapes',
             icon: const Text('The shapes in this module'),
             child: CallbackShortcuts(
               bindings: newShapeActions.bindings,
@@ -132,15 +111,30 @@ class EditModuleScreen extends ConsumerWidget {
             ),
           ),
           TabbedScaffoldTab(
-            title: 'Variables',
+            title: '${module.name} Variables',
             icon: const Text('The variables in this project'),
-            child: ModuleVariablesPage(
-              projectFilename: projectFilename,
-              moduleId: moduleId,
+            child: CommonShortcuts(
+              newCallback: () => _createVariable(ref),
+              child: ModuleVariablesPage(
+                projectFilename: projectFilename,
+                moduleId: moduleId,
+              ),
+            ),
+            floatingActionButton: NewButton(
+              onPressed: () => _createVariable(ref),
+              tooltip: 'New Variable',
             ),
           ),
         ],
       ),
     );
+  }
+
+  /// Create a new variable.
+  void _createVariable(final WidgetRef ref) {
+    final module = ref.read(projectModuleProvider(projectFilename, moduleId));
+    final variable = ModuleVariable(id: newId());
+    module.variables.add(variable);
+    ref.read(projectProvider(projectFilename)).save(ref);
   }
 }
