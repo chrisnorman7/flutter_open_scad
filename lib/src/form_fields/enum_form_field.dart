@@ -10,6 +10,7 @@ class EnumFormField<T extends Enum> extends StatelessWidget {
     required this.values,
     required this.initialValue,
     required this.labelText,
+    this.onChanged,
     super.key,
   });
 
@@ -25,9 +26,12 @@ class EnumFormField<T extends Enum> extends StatelessWidget {
   /// The label text for the field.
   final String labelText;
 
+  /// The function to call when [initialValue] changes.
+  final ValueChanged<T>? onChanged;
+
   /// Build the widget.
   @override
-  Widget build(final BuildContext context) => FormBuilderDropdown(
+  Widget build(final BuildContext context) => FormBuilderDropdown<T>(
     name: name,
     items: [
       for (var i = 0; i < values.length; i++)
@@ -38,6 +42,6 @@ class EnumFormField<T extends Enum> extends StatelessWidget {
     ],
     decoration: InputDecoration(labelText: labelText),
     initialValue: initialValue,
-    valueTransformer: (final value) => value?.name,
+    onChanged: (final value) => onChanged?.call(value!),
   );
 }

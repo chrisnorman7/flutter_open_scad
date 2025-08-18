@@ -474,5 +474,93 @@ final class ModuleVariablesFamily extends $Family
   String toString() => r'moduleVariablesProvider';
 }
 
+/// Provide a single variable.
+@ProviderFor(moduleVariable)
+const moduleVariableProvider = ModuleVariableFamily._();
+
+/// Provide a single variable.
+final class ModuleVariableProvider
+    extends $FunctionalProvider<ModuleVariable, ModuleVariable, ModuleVariable>
+    with $Provider<ModuleVariable> {
+  /// Provide a single variable.
+  const ModuleVariableProvider._({
+    required ModuleVariableFamily super.from,
+    required (String, String, String) super.argument,
+  }) : super(
+         retry: null,
+         name: r'moduleVariableProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$moduleVariableHash();
+
+  @override
+  String toString() {
+    return r'moduleVariableProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<ModuleVariable> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ModuleVariable create(Ref ref) {
+    final argument = this.argument as (String, String, String);
+    return moduleVariable(ref, argument.$1, argument.$2, argument.$3);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ModuleVariable value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ModuleVariable>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ModuleVariableProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$moduleVariableHash() => r'c2e2a2fdd29a0b2939da73b776ee356317d54294';
+
+/// Provide a single variable.
+final class ModuleVariableFamily extends $Family
+    with $FunctionalFamilyOverride<ModuleVariable, (String, String, String)> {
+  const ModuleVariableFamily._()
+    : super(
+        retry: null,
+        name: r'moduleVariableProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provide a single variable.
+  ModuleVariableProvider call(
+    String projectFilename,
+    String moduleId,
+    String variableId,
+  ) => ModuleVariableProvider._(
+    argument: (projectFilename, moduleId, variableId),
+    from: this,
+  );
+
+  @override
+  String toString() => r'moduleVariableProvider';
+}
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

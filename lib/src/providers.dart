@@ -79,3 +79,17 @@ List<ModuleVariable> moduleVariables(
   final module = ref.watch(projectModuleProvider(projectFilename, moduleId));
   return module.variables;
 }
+
+/// Provide a single variable.
+@riverpod
+ModuleVariable moduleVariable(
+  final Ref ref,
+  final String projectFilename,
+  final String moduleId,
+  final String variableId,
+) {
+  final variables = ref.watch(
+    moduleVariablesProvider(projectFilename, moduleId),
+  );
+  return variables.firstWhere((final v) => v.id == variableId);
+}

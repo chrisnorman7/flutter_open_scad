@@ -5,7 +5,6 @@ import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 
 /// The page which shows module variables.
 class ModuleVariablesPage extends ConsumerWidget {
@@ -27,7 +26,6 @@ class ModuleVariablesPage extends ConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final projectContext = ref.watch(projectProvider(projectFilename));
-    final module = ref.watch(projectModuleProvider(projectFilename, moduleId));
     final variables =
         ref.watch(moduleVariablesProvider(projectFilename, moduleId))..sort(
           (final a, final b) =>
@@ -39,6 +37,8 @@ class ModuleVariablesPage extends ConsumerWidget {
         autofocus: true,
       );
     }
+    final module = ref.watch(projectModuleProvider(projectFilename, moduleId));
+    final allVariables = module.availableVariables;
     return ListView.builder(
       itemBuilder: (final context, final index) {
         final variable = variables[index];
@@ -76,10 +76,12 @@ class ModuleVariablesPage extends ConsumerWidget {
             final secondVariableId = variable.secondVariableId;
             final variable1 = firstVariableId == null
                 ? null
-                : variables.firstWhere((final v) => v.id == firstVariableId);
+                : allVariables.firstWhere((final v) => v.id == firstVariableId);
             final variable2 = secondVariableId == null
                 ? null
-                : variables.firstWhere((final v) => v.id == secondVariableId);
+                : allVariables.firstWhere(
+                    (final v) => v.id == secondVariableId,
+                  );
             final x =
                 variable1?.name ??
                 (variable.firstValue?.toStringAsFixed(5) ?? unknownValue);
@@ -114,23 +116,10 @@ class ModuleVariablesPage extends ConsumerWidget {
             }
           }()),
           onTap: () => context.pushWidgetBuilder(
-            (final innerContext) => GetText(
-              onDone: (final value) {
-                innerContext.pop();
-                variable
-                  ..firstValue =
-                      double.tryParse(value) ??
-                      module.getVariableValue(variable)
-                  ..operation = VariableOperation.verbatim;
-                projectContext.save(ref);
-              },
-              labelText: 'First value',
-              text: module.getVariableValue(variable).toStringAsFixed(5),
-              title: 'Default Value',
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(),
-                FormBuilderValidators.numeric(),
-              ]),
+            (final innerContext) => EditVariableScreen(
+              projectFilename: projectFilename,
+              moduleId: moduleId,
+              variableId: variable.id,
             ),
           ),
         );
