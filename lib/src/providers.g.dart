@@ -534,7 +534,7 @@ final class ModuleVariableProvider
   }
 }
 
-String _$moduleVariableHash() => r'c2e2a2fdd29a0b2939da73b776ee356317d54294';
+String _$moduleVariableHash() => r'073e7dc94a3068ea65324e7b33e0f5d06a2dc358';
 
 /// Provide a single variable.
 final class ModuleVariableFamily extends $Family

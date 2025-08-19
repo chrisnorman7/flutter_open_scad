@@ -91,5 +91,5 @@ ModuleVariable moduleVariable(
   final variables = ref.watch(
     moduleVariablesProvider(projectFilename, moduleId),
   );
-  return variables.firstWhere((final v) => v.id == variableId);
+  return variables.requireVariable(variableId);
 }

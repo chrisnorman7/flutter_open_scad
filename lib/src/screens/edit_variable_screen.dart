@@ -67,9 +67,7 @@ class EditVariableScreen extends ConsumerWidget {
                   autofocus: true,
                   value: firstVariableId == null
                       ? null
-                      : variables.firstWhere(
-                          (final v) => v.id == firstVariableId,
-                        ),
+                      : variables.requireVariable(firstVariableId),
                 ),
                 if (firstVariableId == null)
                   DoubleFormField(
@@ -99,9 +97,7 @@ class EditVariableScreen extends ConsumerWidget {
                     autofocus: true,
                     value: secondVariableId == null
                         ? null
-                        : variables.firstWhere(
-                            (final v) => v.id == secondVariableId,
-                          ),
+                        : variables.requireVariable(secondVariableId),
                   ),
                   if (secondVariableId == null)
                     DoubleFormField(
