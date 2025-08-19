@@ -1,5 +1,6 @@
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Useful methods on [AsyncValue].
@@ -10,4 +11,20 @@ extension AsyncValueX<T> on AsyncValue<T> {
     error: ErrorListView.withPositional,
     loading: LoadingWidget.new,
   );
+}
+
+/// Useful methods for lists of [ModuleVariable]s.
+extension ListModuleVariableX on List<ModuleVariable> {
+  /// Find a variable by its [id].
+  ModuleVariable? findVariable(final String id) {
+    for (final variable in this) {
+      if (variable.id == id) {
+        return variable;
+      }
+    }
+    return null;
+  }
+
+  /// Require a variable with the given [id].
+  ModuleVariable requireVariable(final String id) => findVariable(id)!;
 }
