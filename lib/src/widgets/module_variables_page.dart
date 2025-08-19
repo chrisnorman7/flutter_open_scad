@@ -83,11 +83,9 @@ class ModuleVariablesPage extends ConsumerWidget {
                     (final v) => v.id == secondVariableId,
                   );
             final x =
-                variable1?.name ??
-                (variable.firstValue?.toStringAsFixed(5) ?? unknownValue);
+                variable1?.name ?? (variable.firstValue.toStringAsFixed(5));
             final y =
-                variable2?.name ??
-                (variable.secondValue?.toStringAsFixed(5) ?? unknownValue);
+                variable2?.name ?? (variable.secondValue.toStringAsFixed(5));
             switch (variable.operation) {
               case VariableOperation.verbatim:
                 return x;

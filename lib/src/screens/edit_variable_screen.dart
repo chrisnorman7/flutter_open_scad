@@ -74,7 +74,7 @@ class EditVariableScreen extends ConsumerWidget {
                 if (firstVariableId == null)
                   DoubleFormField(
                     name: 'firstValue',
-                    initialValue: variable.firstValue ?? 0.0,
+                    initialValue: variable.firstValue,
                     labelText: 'First Value',
                   ),
                 EnumFormField(
@@ -106,7 +106,7 @@ class EditVariableScreen extends ConsumerWidget {
                   if (secondVariableId == null)
                     DoubleFormField(
                       name: 'secondValue',
-                      initialValue: variable.secondValue ?? 0.0,
+                      initialValue: variable.secondValue,
                       labelText: 'Second Value',
                     ),
                 ],
@@ -118,9 +118,9 @@ class EditVariableScreen extends ConsumerWidget {
                         ...(formKey.currentState?.value ?? variable.toJson()),
                       };
                       variable
-                        ..firstValue = json['firstValue'] as double?
+                        ..firstValue = (json['firstValue'] as double?) ?? 1.0
                         ..firstVariableId = json['firstVariableId'] as String?
-                        ..secondValue = json['secondValue'] as double?
+                        ..secondValue = (json['secondValue'] as double?) ?? 1.0
                         ..secondVariableId =
                             json['secondVariableId'] as String?;
                       projectContext.save(ref);

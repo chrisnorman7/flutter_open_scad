@@ -16,7 +16,7 @@ ModuleVariable _$ModuleVariableFromJson(Map<String, dynamic> json) =>
           $enumDecodeNullable(_$VariableOperationEnumMap, json['operation']) ??
           VariableOperation.verbatim,
       secondVariableId: json['secondVariableId'] as String?,
-      secondValue: (json['secondValue'] as num?)?.toDouble(),
+      secondValue: (json['secondValue'] as num?)?.toDouble() ?? 1.0,
     );
 
 Map<String, dynamic> _$ModuleVariableToJson(ModuleVariable instance) =>
@@ -24,8 +24,8 @@ Map<String, dynamic> _$ModuleVariableToJson(ModuleVariable instance) =>
       'id': instance.id,
       'name': instance.name,
       'firstVariableId': instance.firstVariableId,
-      'operation': _$VariableOperationEnumMap[instance.operation]!,
       'firstValue': instance.firstValue,
+      'operation': _$VariableOperationEnumMap[instance.operation]!,
       'secondVariableId': instance.secondVariableId,
       'secondValue': instance.secondValue,
     };

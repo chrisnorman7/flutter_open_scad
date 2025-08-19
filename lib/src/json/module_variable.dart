@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'module_variable.g.dart';
@@ -54,7 +55,7 @@ class ModuleVariable {
     this.firstValue = 1.0,
     this.operation = VariableOperation.verbatim,
     this.secondVariableId,
-    this.secondValue,
+    this.secondValue = 1.0,
   }) : assert(
          [
            firstVariableId,
@@ -79,31 +80,31 @@ class ModuleVariable {
   /// The ID of the first variable which makes up this variable.
   String? firstVariableId;
 
+  /// The raw first value.
+  double firstValue;
+
   /// The operation which connects the first and second values.
   VariableOperation operation;
-
-  /// The raw first value.
-  double? firstValue;
 
   /// The ID of the second variable which makes up this variable.
   String? secondVariableId;
 
   /// The raw second value.
-  double? secondValue;
+  double secondValue;
 
   /// Show the actual value of this variable.
   double getValue(final List<ModuleVariable> variables) {
     final id1 = firstVariableId;
     final id2 = secondVariableId;
     final x = id1 != null
-        ? variables.firstWhere((final v) => v.id == id1).getValue(variables)
-        : firstValue ?? 0.0;
+        ? variables.requireVariable(id1).getValue(variables)
+        : firstValue;
     if (operation == VariableOperation.verbatim) {
       return x;
     }
     final y = id2 != null
-        ? variables.firstWhere((final v) => v.id == id2).getValue(variables)
-        : secondValue ?? 0.0;
+        ? variables.requireVariable(id2).getValue(variables)
+        : secondValue;
     switch (operation) {
       case VariableOperation.verbatim:
         // Already handled above.
