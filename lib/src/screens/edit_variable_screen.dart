@@ -1,7 +1,9 @@
 import 'package:backstreets_widgets/extensions.dart';
 import 'package:backstreets_widgets/screens.dart';
+import 'package:backstreets_widgets/shortcuts.dart';
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,87 +49,121 @@ class EditVariableScreen extends ConsumerWidget {
       VariableOperation.tan,
       VariableOperation.verbatim,
     };
-    return Cancel(
-      child: SimpleScaffold(
-        title: 'Edit ${variable.name}',
-        body: FormBuilder(
-          key: formKey,
-          initialValue: variable.toJson(),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                VariableFormField(
-                  name: 'firstVariableId',
-                  variableId: variable.id,
-                  variables: variables,
-                  onChanged: (final value) {
-                    variable.firstVariableId = value;
-                    projectContext.save(ref);
-                  },
-                  autofocus: true,
-                  value: firstVariableId == null
-                      ? null
-                      : variables.requireVariable(firstVariableId),
-                ),
-                if (firstVariableId == null)
-                  DoubleFormField(
-                    name: 'firstValue',
-                    initialValue: variable.firstValue,
-                    labelText: 'First Value',
-                  ),
-                EnumFormField(
-                  name: 'operation',
-                  values: VariableOperation.values,
-                  initialValue: variable.operation,
-                  labelText: 'Operation',
-                  onChanged: (final value) {
-                    variable.operation = value;
-                    projectContext.save(ref);
-                  },
-                ),
-                if (!singleValueOperations.contains(variable.operation)) ...[
+    return CallbackShortcuts(
+      bindings: {
+        CrossPlatformSingleActivator(LogicalKeyboardKey.keyR): () =>
+            _renameVariable(ref),
+      },
+      child: Cancel(
+        child: SimpleScaffold(
+          actions: [
+            IconButton(
+              onPressed: () => _renameVariable(ref),
+              icon: const Icon(Icons.edit),
+              tooltip: 'Rename Variable',
+            ),
+          ],
+          title: 'Edit ${variable.name}',
+          body: FormBuilder(
+            key: formKey,
+            initialValue: variable.toJson(),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
                   VariableFormField(
-                    name: 'secondVariableId',
+                    name: 'firstVariableId',
                     variableId: variable.id,
                     variables: variables,
                     onChanged: (final value) {
-                      variable.secondVariableId = value;
+                      variable.firstVariableId = value;
                       projectContext.save(ref);
                     },
                     autofocus: true,
-                    value: secondVariableId == null
+                    value: firstVariableId == null
                         ? null
-                        : variables.requireVariable(secondVariableId),
+                        : variables.requireVariable(firstVariableId),
                   ),
-                  if (secondVariableId == null)
+                  if (firstVariableId == null)
                     DoubleFormField(
-                      name: 'secondValue',
-                      initialValue: variable.secondValue,
-                      labelText: 'Second Value',
+                      name: 'firstValue',
+                      initialValue: variable.firstValue,
+                      labelText: 'First Value',
                     ),
-                ],
-                SaveButton(
-                  onPressed: () {
-                    if (formKey.currentState?.saveAndValidate() ?? false) {
-                      final json = {
-                        'id': variable.id,
-                        ...(formKey.currentState?.value ?? variable.toJson()),
-                      };
-                      variable
-                        ..firstValue = (json['firstValue'] as double?) ?? 1.0
-                        ..firstVariableId = json['firstVariableId'] as String?
-                        ..secondValue = (json['secondValue'] as double?) ?? 1.0
-                        ..secondVariableId =
-                            json['secondVariableId'] as String?;
+                  EnumFormField(
+                    name: 'operation',
+                    values: VariableOperation.values,
+                    initialValue: variable.operation,
+                    labelText: 'Operation',
+                    onChanged: (final value) {
+                      variable.operation = value;
                       projectContext.save(ref);
-                      context.pop();
-                    }
-                  },
-                ),
-              ],
+                    },
+                  ),
+                  if (!singleValueOperations.contains(variable.operation)) ...[
+                    VariableFormField(
+                      name: 'secondVariableId',
+                      variableId: variable.id,
+                      variables: variables,
+                      onChanged: (final value) {
+                        variable.secondVariableId = value;
+                        projectContext.save(ref);
+                      },
+                      autofocus: true,
+                      value: secondVariableId == null
+                          ? null
+                          : variables.requireVariable(secondVariableId),
+                    ),
+                    if (secondVariableId == null)
+                      DoubleFormField(
+                        name: 'secondValue',
+                        initialValue: variable.secondValue,
+                        labelText: 'Second Value',
+                      ),
+                  ],
+                  SaveButton(
+                    onPressed: () {
+                      if (formKey.currentState?.saveAndValidate() ?? false) {
+                        final json = {
+                          'id': variable.id,
+                          ...(formKey.currentState?.value ?? variable.toJson()),
+                        };
+                        variable
+                          ..firstValue = (json['firstValue'] as double?) ?? 1.0
+                          ..firstVariableId = json['firstVariableId'] as String?
+                          ..secondValue =
+                              (json['secondValue'] as double?) ?? 1.0
+                          ..secondVariableId =
+                              json['secondVariableId'] as String?;
+                        projectContext.save(ref);
+                        context.pop();
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  /// Rename the variable.
+  Future<void> _renameVariable(final WidgetRef ref) {
+    final projectContext = ref.read(projectProvider(projectFilename));
+    final variable = ref.read(
+      moduleVariableProvider(projectFilename, moduleId, variableId),
+    );
+    return ref.context.pushWidgetBuilder(
+      (final innerContext) => GetText(
+        onDone: (final value) {
+          innerContext.pop();
+          variable.name = value;
+          projectContext.save(ref);
+        },
+        labelText: 'Name',
+        text: variable.name,
+        title: 'Rename Variable',
       ),
     );
   }
