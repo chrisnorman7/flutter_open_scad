@@ -48,11 +48,17 @@ class _ArgumentValueFormFieldState
   /// The controller for the text field.
   late final TextEditingController _controller;
 
+  /// The current ID of the variable.
+  String? _variableId;
+
   /// Initialise state.
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _controller = TextEditingController(
+      text: widget.argumentValue.value.toStringAsFixed(5),
+    );
+    _variableId = widget.argumentValue.variableId;
   }
 
   /// Dispose of the widget.
@@ -69,11 +75,10 @@ class _ArgumentValueFormFieldState
       projectModuleProvider(widget.projectFilename, widget.moduleId),
     );
     final variables = module.availableVariables;
-    final variableId = widget.argumentValue.variableId;
+    final variableId = _variableId;
     final variable = variableId == null
         ? null
-        : variables.findVariable(variableId);
-    _controller.text = widget.argumentValue.value.toStringAsFixed(5);
+        : variables.requireVariable(variableId);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -87,24 +92,23 @@ class _ArgumentValueFormFieldState
                     autofocus: widget.argumentValue.variableId == null,
                     child: const Text('Custom'),
                     onPressed: () {
-                      widget.onDone(
-                        ArgumentValue(value: widget.argumentValue.value),
-                      );
+                      setState(() {
+                        _variableId = null;
+                      });
+                      _onDone();
                     },
                   );
                 }
                 final variable = variables[i];
                 final value = module.getVariableValue(variable);
                 return MenuItemButton(
-                  autofocus: variable.id == widget.argumentValue.variableId,
+                  autofocus: variable.id == _variableId,
                   key: ValueKey(variable.id),
                   onPressed: () {
-                    widget.onDone(
-                      ArgumentValue(
-                        variableId: variable.id,
-                        value: widget.argumentValue.value,
-                      ),
-                    );
+                    setState(() {
+                      _variableId = variable.id;
+                    });
+                    _onDone();
                   },
                   child: Text('${variable.name} = $value'),
                 );
@@ -125,13 +129,20 @@ class _ArgumentValueFormFieldState
                 decimal: true,
               ),
               onSubmitted: (final string) {
-                final value =
-                    double.tryParse(string) ?? widget.argumentValue.value;
-                widget.onDone(ArgumentValue(value: value));
+                _onDone();
               },
             ),
           ),
       ],
+    );
+  }
+
+  void _onDone() {
+    widget.onDone(
+      ArgumentValue(
+        value: double.tryParse(_controller.text) ?? widget.argumentValue.value,
+        variableId: _variableId,
+      ),
     );
   }
 }

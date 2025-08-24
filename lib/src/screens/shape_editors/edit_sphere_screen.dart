@@ -1,5 +1,7 @@
 import 'package:backstreets_widgets/screens.dart';
+import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,6 +28,7 @@ class EditSphereScreen extends ConsumerWidget {
   /// Build a widget.
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
+    final projectContext = ref.watch(projectProvider(projectFilename));
     final shape = ref.watch(
       moduleShapeProvider(projectFilename, moduleId, shapeId),
     );
@@ -35,6 +38,63 @@ class EditSphereScreen extends ConsumerWidget {
       // ignore: lines_longer_than_80_chars
       'The shape was not a sphere: Project filename: $projectFilename, module ID: ${moduleId}Id, shape ID: $shapeId, type ${shapeType.name}',
     );
-    return const SimpleScaffold(title: 'Edit Sphere', body: NotImplemented());
+    final arguments = SphereArguments.fromJson(shape.arguments);
+    final key = GlobalKey<FormBuilderState>();
+    return PopScope(
+      onPopInvokedWithResult: (final didPop, final result) {
+        shape.arguments = arguments.toJson();
+        projectContext.save(ref);
+      },
+      child: Cancel(
+        child: SimpleScaffold(
+          actions: [
+            ModuleConfigurationButton(
+              value: ModuleConfiguration(
+                fs: arguments.fs,
+                fa: arguments.fa,
+                fn: arguments.fn,
+              ),
+              onChanged: (final value) {
+                arguments
+                  ..fs = value.fs
+                  ..fa = value.fa
+                  ..fn = value.fn;
+                projectContext.save(ref);
+              },
+            ),
+          ],
+          title: 'Edit Sphere',
+          body: FormBuilder(
+            key: key,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ArgumentValueFormField(
+                    projectFilename: projectFilename,
+                    moduleId: moduleId,
+                    argumentValue: arguments.size,
+                    onDone: (final value) {
+                      arguments.size = value;
+                      projectContext.save(ref);
+                    },
+                    autofocus: true,
+                    label: 'Size',
+                  ),
+                  EnumFormField(
+                    values: SizeType.values,
+                    initialValue: arguments.sizeType,
+                    labelText: 'Type of size',
+                    onChanged: (final value) {
+                      arguments.sizeType = value;
+                      projectContext.save(ref);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

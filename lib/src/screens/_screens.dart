@@ -1,3 +1,4 @@
+export 'edit_module_configuration_screen.dart';
 export 'edit_module_screen.dart';
 export 'edit_variable_screen.dart';
 export 'main_screen.dart';

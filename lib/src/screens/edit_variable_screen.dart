@@ -90,7 +90,6 @@ class EditVariableScreen extends ConsumerWidget {
                       labelText: 'First Value',
                     ),
                   EnumFormField(
-                    name: 'operation',
                     values: VariableOperation.values,
                     initialValue: variable.operation,
                     labelText: 'Operation',
@@ -123,17 +122,12 @@ class EditVariableScreen extends ConsumerWidget {
                   SaveButton(
                     onPressed: () {
                       if (formKey.currentState?.saveAndValidate() ?? false) {
-                        final json = {
-                          'id': variable.id,
-                          ...(formKey.currentState?.value ?? variable.toJson()),
-                        };
+                        final json =
+                            formKey.currentState?.value ?? variable.toJson();
                         variable
                           ..firstValue = (json['firstValue'] as double?) ?? 1.0
-                          ..firstVariableId = json['firstVariableId'] as String?
                           ..secondValue =
-                              (json['secondValue'] as double?) ?? 1.0
-                          ..secondVariableId =
-                              json['secondVariableId'] as String?;
+                              (json['secondValue'] as double?) ?? 1.0;
                         projectContext.save(ref);
                         context.pop();
                       }

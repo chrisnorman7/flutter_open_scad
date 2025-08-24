@@ -1,11 +1,9 @@
-import 'package:backstreets_widgets/extensions.dart';
 import 'package:backstreets_widgets/screens.dart';
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 
 /// A screen for editing a circle.
 class EditCircleScreen extends ConsumerWidget {
@@ -42,72 +40,56 @@ class EditCircleScreen extends ConsumerWidget {
     );
     final arguments = CircleArguments.fromJson(shape.arguments);
     final formKey = GlobalKey<FormBuilderState>();
-    return Cancel(
-      child: SimpleScaffold(
-        title: 'Edit ${shape.getName()}',
-        body: FormBuilder(
-          key: formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ArgumentValueFormField(
-                  autofocus: true,
-                  projectFilename: projectFilename,
-                  moduleId: moduleId,
-                  argumentValue: arguments.size,
-                  onDone: (final value) {
-                    arguments.size = value;
-                    shape.arguments = arguments.toJson();
-                    projectContext.save(ref);
-                  },
-                  label: 'Size',
-                ),
-                EnumFormField(
-                  name: 'sizeType',
-                  values: SizeType.values,
-                  initialValue: arguments.sizeType,
-                  labelText: 'Type of size',
-                ),
-                DoubleFormField(
-                  name: 'fa',
-                  initialValue: arguments.fa,
-                  labelText: r'$fa',
-                ),
-                DoubleFormField(
-                  name: 'fs',
-                  initialValue: arguments.fs,
-                  labelText: r'$fs',
-                ),
-                FormBuilderTextField(
-                  name: 'fn',
-                  decoration: const InputDecoration(labelText: r'$fn'),
-                  initialValue: '${arguments.fn}',
-                  keyboardType: TextInputType.number,
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                    FormBuilderValidators.min(0),
-                  ]),
-                  valueTransformer: (final value) => value == null
-                      ? arguments.fn
-                      : int.tryParse(value) ?? arguments.fn,
-                ),
-                SaveButton(
-                  onPressed: () {
-                    if (formKey.currentState?.saveAndValidate() ?? false) {
-                      final json =
-                          formKey.currentState?.value ?? arguments.toJson();
-                      arguments
-                        ..sizeType = json['sizeType'] as SizeType
-                        ..fa = json['fa'] as double
-                        ..fs = json['fs'] as double
-                        ..fn = json['fn'] as int;
-                      shape.arguments = arguments.toJson();
-                      projectContext.save(ref);
-                      context.pop();
-                    }
-                  },
-                ),
-              ],
+    return PopScope(
+      onPopInvokedWithResult: (final didPop, final result) {
+        shape.arguments = arguments.toJson();
+        projectContext.save(ref);
+      },
+      child: Cancel(
+        child: SimpleScaffold(
+          actions: [
+            ModuleConfigurationButton(
+              value: ModuleConfiguration(
+                fs: arguments.fs,
+                fa: arguments.fa,
+                fn: arguments.fn,
+              ),
+              onChanged: (final value) {
+                arguments
+                  ..fs = value.fs
+                  ..fa = value.fa
+                  ..fn = value.fn;
+                shape.arguments = arguments.toJson();
+                projectContext.save(ref);
+              },
+            ),
+          ],
+          title: 'Edit ${shape.getName()}',
+          body: FormBuilder(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ArgumentValueFormField(
+                    autofocus: true,
+                    projectFilename: projectFilename,
+                    moduleId: moduleId,
+                    argumentValue: arguments.size,
+                    onDone: (final value) {
+                      arguments.size = value;
+                    },
+                    label: 'Size',
+                  ),
+                  EnumFormField(
+                    values: SizeType.values,
+                    initialValue: arguments.sizeType,
+                    labelText: 'Type of size',
+                    onChanged: (final value) {
+                      arguments.sizeType = value;
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

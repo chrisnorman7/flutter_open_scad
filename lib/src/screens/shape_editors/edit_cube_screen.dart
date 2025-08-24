@@ -1,4 +1,3 @@
-import 'package:backstreets_widgets/extensions.dart';
 import 'package:backstreets_widgets/screens.dart';
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -41,63 +40,61 @@ class EditCubeScreen extends ConsumerWidget {
     );
     final arguments = CubeArguments.fromJson(shape.arguments);
     final formKey = GlobalKey<FormBuilderState>();
-    return Cancel(
-      child: SimpleScaffold(
-        title: 'Edit ${shape.getName()}',
-        body: FormBuilder(
-          key: formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ArgumentValueFormField(
-                  projectFilename: projectFilename,
-                  moduleId: moduleId,
-                  argumentValue: arguments.x,
-                  onDone: (final value) {
-                    arguments.x = value;
-                    projectContext.save(ref);
-                  },
-                  label: 'X',
-                ),
-                ArgumentValueFormField(
-                  projectFilename: projectFilename,
-                  moduleId: moduleId,
-                  argumentValue: arguments.y,
-                  onDone: (final value) {
-                    arguments.y = value;
-                    projectContext.save(ref);
-                  },
-                  label: 'Y',
-                ),
-                ArgumentValueFormField(
-                  projectFilename: projectFilename,
-                  moduleId: moduleId,
-                  argumentValue: arguments.z,
-                  onDone: (final value) {
-                    arguments.z = value;
-                    projectContext.save(ref);
-                  },
-                  label: 'Z',
-                ),
-                FormBuilderCheckbox(
-                  name: 'centre',
-                  title: const Text('Centre'),
-                  initialValue: arguments.centre,
-                  onChanged: (final value) {
-                    arguments.centre = value ?? false;
-                    projectContext.save(ref);
-                  },
-                ),
-                SaveButton(
-                  onPressed: () {
-                    if (formKey.currentState?.saveAndValidate() ?? false) {
-                      shape.arguments = arguments.toJson();
+    return PopScope(
+      onPopInvokedWithResult: (final didPop, final result) {
+        shape.arguments = arguments.toJson();
+        projectContext.save(ref);
+      },
+      child: Cancel(
+        child: SimpleScaffold(
+          title: 'Edit ${shape.getName()}',
+          body: FormBuilder(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ArgumentValueFormField(
+                    autofocus: true,
+                    projectFilename: projectFilename,
+                    moduleId: moduleId,
+                    argumentValue: arguments.x,
+                    onDone: (final value) {
+                      arguments.x = value;
                       projectContext.save(ref);
-                      context.pop();
-                    }
-                  },
-                ),
-              ],
+                    },
+                    label: 'X',
+                  ),
+                  ArgumentValueFormField(
+                    projectFilename: projectFilename,
+                    moduleId: moduleId,
+                    argumentValue: arguments.y,
+                    onDone: (final value) {
+                      arguments.y = value;
+                      projectContext.save(ref);
+                    },
+                    label: 'Y',
+                  ),
+                  ArgumentValueFormField(
+                    projectFilename: projectFilename,
+                    moduleId: moduleId,
+                    argumentValue: arguments.z,
+                    onDone: (final value) {
+                      arguments.z = value;
+                      projectContext.save(ref);
+                    },
+                    label: 'Z',
+                  ),
+                  FormBuilderCheckbox(
+                    name: 'centre',
+                    title: const Text('Centre'),
+                    initialValue: arguments.centre,
+                    onChanged: (final value) {
+                      arguments.centre = value ?? false;
+                      projectContext.save(ref);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

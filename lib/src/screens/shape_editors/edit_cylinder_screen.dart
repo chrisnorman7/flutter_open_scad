@@ -1,11 +1,9 @@
-import 'package:backstreets_widgets/extensions.dart';
 import 'package:backstreets_widgets/screens.dart';
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 
 /// A screen for editing a cylinder.
 class EditCylinderScreen extends ConsumerWidget {
@@ -42,89 +40,101 @@ class EditCylinderScreen extends ConsumerWidget {
     );
     final arguments = CylinderArguments.fromJson(shape.arguments);
     final formKey = GlobalKey<FormBuilderState>();
-    return Cancel(
-      child: SimpleScaffold(
-        title: 'Edit ${shape.getName()}',
-        body: FormBuilder(
-          key: formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                DoubleFormField(
-                  name: 'height',
-                  initialValue: arguments.height,
-                  labelText: 'Height',
-                  autofocus: true,
-                ),
-                EnumFormField(
-                  name: 'ends',
-                  values: CylinderEnds.values,
-                  initialValue: arguments.ends,
-                  labelText: 'End Linking',
-                ),
-                FormBuilderCheckbox(
-                  name: 'centre',
-                  title: const Text('Centre'),
-                  initialValue: arguments.centre,
-                ),
-                DoubleFormField(
-                  name: 'size1',
-                  initialValue: arguments.size1,
-                  labelText: 'Size 1',
-                ),
-                EnumFormField(
-                  name: 'size1Type',
-                  values: SizeType.values,
-                  initialValue: arguments.size1Type,
-                  labelText: 'Type of Size 1',
-                ),
-                DoubleFormField(
-                  name: 'size2',
-                  initialValue: arguments.size2,
-                  labelText: 'Size 2',
-                ),
-                EnumFormField(
-                  name: 'size2Type',
-                  values: SizeType.values,
-                  initialValue: arguments.size2Type,
-                  labelText: 'Type of Size 2',
-                ),
-                DoubleFormField(
-                  name: 'fa',
-                  initialValue: arguments.fa,
-                  labelText: r'$fa',
-                ),
-                DoubleFormField(
-                  name: 'fs',
-                  initialValue: arguments.fs,
-                  labelText: r'$fs',
-                ),
-                FormBuilderTextField(
-                  name: 'fn',
-                  decoration: const InputDecoration(labelText: r'$fn'),
-                  initialValue: '${arguments.fn}',
-                  keyboardType: TextInputType.number,
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                    FormBuilderValidators.min(0),
-                  ]),
-                  valueTransformer: (final value) => value == null
-                      ? arguments.fn
-                      : int.tryParse(value) ?? arguments.fn,
-                ),
-                SaveButton(
-                  onPressed: () {
-                    if (formKey.currentState?.saveAndValidate() ?? false) {
-                      final json =
-                          formKey.currentState?.value ?? arguments.toJson();
-                      final testArguments = CubeArguments.fromJson(json);
-                      shape.arguments = testArguments.toJson();
+    return PopScope(
+      onPopInvokedWithResult: (final didPop, final result) {
+        shape.arguments = arguments.toJson();
+        projectContext.save(ref);
+      },
+      child: Cancel(
+        child: SimpleScaffold(
+          actions: [
+            ModuleConfigurationButton(
+              value: ModuleConfiguration(
+                fs: arguments.fs,
+                fa: arguments.fa,
+                fn: arguments.fn,
+              ),
+              onChanged: (final value) {
+                arguments
+                  ..fs = value.fs
+                  ..fa = value.fa
+                  ..fn = value.fn;
+                shape.arguments = arguments.toJson();
+                projectContext.save(ref);
+              },
+            ),
+          ],
+          title: 'Edit ${shape.getName()}',
+          body: FormBuilder(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ArgumentValueFormField(
+                    autofocus: true,
+                    projectFilename: projectFilename,
+                    moduleId: moduleId,
+                    argumentValue: arguments.height,
+                    onDone: (final value) {
+                      arguments.height = value;
                       projectContext.save(ref);
-                      context.pop();
-                    }
-                  },
-                ),
-              ],
+                    },
+                    label: 'Height',
+                  ),
+                  EnumFormField(
+                    values: CylinderEnds.values,
+                    initialValue: arguments.ends,
+                    labelText: 'End Linking',
+                    onChanged: (final value) {
+                      arguments.ends = value;
+                      projectContext.save(ref);
+                    },
+                  ),
+                  FormBuilderCheckbox(
+                    name: 'centre',
+                    title: const Text('Centre'),
+                    initialValue: arguments.centre,
+                  ),
+                  ArgumentValueFormField(
+                    projectFilename: projectFilename,
+                    moduleId: moduleId,
+                    argumentValue: arguments.size1,
+                    onDone: (final value) {
+                      arguments.size1 = value;
+                      projectContext.save(ref);
+                    },
+                    label: 'Size 1',
+                  ),
+                  EnumFormField(
+                    values: SizeType.values,
+                    initialValue: arguments.size1Type,
+                    labelText: 'Type of Size 1',
+                    onChanged: (final value) {
+                      arguments.size1Type = value;
+                      projectContext.save(ref);
+                    },
+                  ),
+                  ArgumentValueFormField(
+                    projectFilename: projectFilename,
+                    moduleId: moduleId,
+                    argumentValue: arguments.size2,
+                    onDone: (final value) {
+                      arguments.size2 = value;
+                      projectContext.save(ref);
+                    },
+                    label: 'Size 2',
+                  ),
+                  EnumFormField(
+                    values: SizeType.values,
+                    initialValue: arguments.size2Type,
+                    labelText: 'Type of Size 2',
+                    onChanged: (final value) {
+                      arguments.size2Type = value;
+                      projectContext.save(ref);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

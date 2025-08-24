@@ -8,11 +8,13 @@ part of 'sphere_arguments.dart';
 
 SphereArguments _$SphereArgumentsFromJson(Map<String, dynamic> json) =>
     SphereArguments(
-      size: (json['size'] as num?)?.toDouble() ?? 1,
+      size: json['size'] == null
+          ? const ArgumentValue()
+          : ArgumentValue.fromJson(json['size'] as Map<String, dynamic>),
       sizeType:
           $enumDecodeNullable(_$SizeTypeEnumMap, json['sizeType']) ??
           SizeType.radius,
-      fn: (json['fn'] as num?)?.toDouble() ?? 0,
+      fn: (json['fn'] as num?)?.toInt() ?? 0,
       fa: (json['fa'] as num?)?.toDouble() ?? 12,
       fs: (json['fs'] as num?)?.toDouble() ?? 2,
     );

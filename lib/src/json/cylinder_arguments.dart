@@ -17,12 +17,12 @@ enum CylinderEnds {
 class CylinderArguments {
   /// Create an instance.
   CylinderArguments({
-    this.height = 1,
+    this.height = const ArgumentValue(),
     this.ends = CylinderEnds.linked,
     this.centre = false,
-    this.size1 = 1,
+    this.size1 = const ArgumentValue(),
     this.size1Type = SizeType.radius,
-    this.size2 = 1,
+    this.size2 = const ArgumentValue(),
     this.size2Type = SizeType.radius,
     this.fa = 12,
     this.fs = 2,
@@ -34,7 +34,7 @@ class CylinderArguments {
       _$CylinderArgumentsFromJson(json);
 
   /// The height of the cylinder.
-  double height;
+  ArgumentValue height;
 
   /// How the ends are connected.
   CylinderEnds ends;
@@ -43,13 +43,13 @@ class CylinderArguments {
   bool centre;
 
   /// The size of the bottom circular face.
-  double size1;
+  ArgumentValue size1;
 
   /// The type of [size1].
   SizeType size1Type;
 
   /// The size of the top circular face.
-  double size2;
+  ArgumentValue size2;
 
   /// The type of [size2].
   SizeType size2Type;

@@ -8,7 +8,7 @@ part 'sphere_arguments.g.dart';
 class SphereArguments {
   /// Create an instance.
   SphereArguments({
-    this.size = 1,
+    this.size = const ArgumentValue(),
     this.sizeType = SizeType.radius,
     this.fn = 0,
     this.fa = 12,
@@ -20,19 +20,19 @@ class SphereArguments {
       _$SphereArgumentsFromJson(json);
 
   /// The size of this sphere.
-  double size;
+  ArgumentValue size;
 
   /// The type of [size].
   SizeType sizeType;
 
   /// The value of $fa.
-  double? fa;
+  double fa;
 
   /// The value of $fs.
-  double? fs;
+  double fs;
 
   /// The value of $fn.
-  double? fn;
+  int fn;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$SphereArgumentsToJson(this);

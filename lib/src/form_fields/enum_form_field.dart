@@ -6,16 +6,12 @@ import 'package:recase/recase.dart';
 class EnumFormField<T extends Enum> extends StatelessWidget {
   /// Create an instance.
   const EnumFormField({
-    required this.name,
     required this.values,
     required this.initialValue,
     required this.labelText,
-    this.onChanged,
+    required this.onChanged,
     super.key,
   });
-
-  /// The name of the field.
-  final String name;
 
   /// The values that can be selected from.
   final List<T> values;
@@ -27,12 +23,12 @@ class EnumFormField<T extends Enum> extends StatelessWidget {
   final String labelText;
 
   /// The function to call when [initialValue] changes.
-  final ValueChanged<T>? onChanged;
+  final ValueChanged<T> onChanged;
 
   /// Build the widget.
   @override
   Widget build(final BuildContext context) => FormBuilderDropdown<T>(
-    name: name,
+    name: labelText.snakeCase,
     items: [
       for (var i = 0; i < values.length; i++)
         DropdownMenuItem(
@@ -42,6 +38,6 @@ class EnumFormField<T extends Enum> extends StatelessWidget {
     ],
     decoration: InputDecoration(labelText: labelText),
     initialValue: initialValue,
-    onChanged: (final value) => onChanged?.call(value!),
+    onChanged: (final value) => onChanged.call(value!),
   );
 }

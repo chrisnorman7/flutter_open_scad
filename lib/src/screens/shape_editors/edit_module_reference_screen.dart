@@ -47,6 +47,9 @@ class EditModuleReferenceScreen extends ConsumerWidget {
     final currentModule = ref.watch(
       projectModuleProvider(projectFilename, arguments.id),
     );
+    final variables = ref.watch(
+      moduleVariablesProvider(projectFilename, moduleId),
+    );
     return SimpleScaffold(
       title: 'Edit Circle',
       body: ListView(
@@ -70,7 +73,7 @@ class EditModuleReferenceScreen extends ConsumerWidget {
             title: const Text('Module'),
             subtitle: Text(currentModule.name),
           ),
-          ...currentModule.variables.map(
+          ...variables.map(
             (final variable) => ListTile(
               title: Text(variable.name),
               subtitle: Text(
