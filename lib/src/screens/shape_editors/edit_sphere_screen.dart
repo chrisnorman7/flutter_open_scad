@@ -63,7 +63,7 @@ class EditSphereScreen extends ConsumerWidget {
               },
             ),
           ],
-          title: 'Edit Sphere',
+          title: 'Edit ${shape.getName()}',
           body: FormBuilder(
             key: key,
             child: SingleChildScrollView(

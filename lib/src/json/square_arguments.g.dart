@@ -8,8 +8,12 @@ part of 'square_arguments.dart';
 
 SquareArguments _$SquareArgumentsFromJson(Map<String, dynamic> json) =>
     SquareArguments(
-      x: (json['x'] as num?)?.toDouble() ?? 10.0,
-      y: (json['y'] as num?)?.toDouble() ?? 10.0,
+      x: json['x'] == null
+          ? const ArgumentValue(value: 10.0)
+          : ArgumentValue.fromJson(json['x'] as Map<String, dynamic>),
+      y: json['y'] == null
+          ? const ArgumentValue(value: 10.0)
+          : ArgumentValue.fromJson(json['y'] as Map<String, dynamic>),
       centre: json['centre'] as bool? ?? false,
     );
 

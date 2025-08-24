@@ -50,58 +50,60 @@ class EditModuleReferenceScreen extends ConsumerWidget {
     final variables = ref.watch(
       moduleVariablesProvider(projectFilename, moduleId),
     );
-    return SimpleScaffold(
-      title: 'Edit Circle',
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          PerformableActionsListTile(
-            actions: otherModules
-                .map(
-                  (final m) => PerformableAction(
-                    name: m.name,
-                    invoke: () {
-                      arguments.id = m.id;
-                      arguments.arguments.clear();
+    return Cancel(
+      child: SimpleScaffold(
+        title: 'Edit ${shape.getName()}',
+        body: ListView(
+          shrinkWrap: true,
+          children: [
+            PerformableActionsListTile(
+              actions: otherModules
+                  .map(
+                    (final m) => PerformableAction(
+                      name: m.name,
+                      invoke: () {
+                        arguments.id = m.id;
+                        arguments.arguments.clear();
+                        projectContext.save(ref);
+                      },
+                      checked: m.id == arguments.id,
+                    ),
+                  )
+                  .toList(),
+              autofocus: true,
+              title: const Text('Module'),
+              subtitle: Text(currentModule.name),
+            ),
+            ...variables.map(
+              (final variable) => ListTile(
+                title: Text(variable.name),
+                subtitle: Text(
+                  // ignore: lines_longer_than_80_chars
+                  '${arguments.arguments[variable.id] ?? currentModule.getVariableValue(variable)}',
+                ),
+                onTap: () => context.pushWidgetBuilder(
+                  (final innerContext) => GetText(
+                    onDone: (final value) {
+                      innerContext.pop();
+                      arguments.arguments[variable.id] = double.parse(value);
                       projectContext.save(ref);
                     },
-                    checked: m.id == arguments.id,
+                    labelText: variable.name,
+                    text:
+                        (arguments.arguments[variable.id] ??
+                                currentModule.getVariableValue(variable))
+                            .toStringAsFixed(5),
+                    title: 'Set Variable Value',
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                      FormBuilderValidators.numeric(),
+                    ]),
                   ),
-                )
-                .toList(),
-            autofocus: true,
-            title: const Text('Module'),
-            subtitle: Text(currentModule.name),
-          ),
-          ...variables.map(
-            (final variable) => ListTile(
-              title: Text(variable.name),
-              subtitle: Text(
-                // ignore: lines_longer_than_80_chars
-                '${arguments.arguments[variable.id] ?? currentModule.getVariableValue(variable)}',
-              ),
-              onTap: () => context.pushWidgetBuilder(
-                (final innerContext) => GetText(
-                  onDone: (final value) {
-                    innerContext.pop();
-                    arguments.arguments[variable.id] = double.parse(value);
-                    projectContext.save(ref);
-                  },
-                  labelText: variable.name,
-                  text:
-                      (arguments.arguments[variable.id] ??
-                              currentModule.getVariableValue(variable))
-                          .toStringAsFixed(5),
-                  title: 'Set Variable Value',
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                    FormBuilderValidators.numeric(),
-                  ]),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
