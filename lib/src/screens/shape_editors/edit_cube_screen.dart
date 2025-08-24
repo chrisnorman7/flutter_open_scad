@@ -49,34 +49,49 @@ class EditCubeScreen extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                DoubleFormField(
-                  name: 'x',
-                  initialValue: arguments.x,
-                  labelText: 'X',
-                  autofocus: true,
+                ArgumentValueFormField(
+                  projectFilename: projectFilename,
+                  moduleId: moduleId,
+                  argumentValue: arguments.x,
+                  onDone: (final value) {
+                    arguments.x = value;
+                    projectContext.save(ref);
+                  },
+                  label: 'X',
                 ),
-                DoubleFormField(
-                  name: 'y',
-                  initialValue: arguments.y,
-                  labelText: 'Y',
+                ArgumentValueFormField(
+                  projectFilename: projectFilename,
+                  moduleId: moduleId,
+                  argumentValue: arguments.y,
+                  onDone: (final value) {
+                    arguments.y = value;
+                    projectContext.save(ref);
+                  },
+                  label: 'Y',
                 ),
-                DoubleFormField(
-                  name: 'z',
-                  initialValue: arguments.z,
-                  labelText: 'Z',
+                ArgumentValueFormField(
+                  projectFilename: projectFilename,
+                  moduleId: moduleId,
+                  argumentValue: arguments.z,
+                  onDone: (final value) {
+                    arguments.z = value;
+                    projectContext.save(ref);
+                  },
+                  label: 'Z',
                 ),
                 FormBuilderCheckbox(
                   name: 'centre',
                   title: const Text('Centre'),
                   initialValue: arguments.centre,
+                  onChanged: (final value) {
+                    arguments.centre = value ?? false;
+                    projectContext.save(ref);
+                  },
                 ),
                 SaveButton(
                   onPressed: () {
                     if (formKey.currentState?.saveAndValidate() ?? false) {
-                      final json =
-                          formKey.currentState?.value ?? arguments.toJson();
-                      final testArguments = CubeArguments.fromJson(json);
-                      shape.arguments = testArguments.toJson();
+                      shape.arguments = arguments.toJson();
                       projectContext.save(ref);
                       context.pop();
                     }

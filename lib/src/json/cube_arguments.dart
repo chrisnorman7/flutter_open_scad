@@ -1,3 +1,4 @@
+import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'cube_arguments.g.dart';
@@ -7,9 +8,9 @@ part 'cube_arguments.g.dart';
 class CubeArguments {
   /// Create an instance.
   CubeArguments({
-    this.x = 10.0,
-    this.y = 10.0,
-    this.z = 10.0,
+    this.x = const ArgumentValue(value: 10),
+    this.y = const ArgumentValue(value: 10),
+    this.z = const ArgumentValue(value: 10),
     this.centre = false,
   });
 
@@ -18,16 +19,16 @@ class CubeArguments {
       _$CubeArgumentsFromJson(json);
 
   /// The x coordinate.
-  double x;
+  ArgumentValue x;
 
   /// The y coordinate.
-  double y;
+  ArgumentValue y;
 
   /// The z coordinate.
-  double z;
+  ArgumentValue z;
 
   /// Whether this cube should be centred.
-  final bool centre;
+  bool centre;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$CubeArgumentsToJson(this);
