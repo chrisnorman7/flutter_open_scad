@@ -136,5 +136,12 @@ class EditModuleScreen extends ConsumerWidget {
     final variable = ModuleVariable(id: newId());
     module.variables.add(variable);
     ref.read(projectProvider(projectFilename)).save(ref);
+    ref.context.pushWidgetBuilder(
+      (_) => EditVariableScreen(
+        projectFilename: projectFilename,
+        moduleId: moduleId,
+        variableId: variable.id,
+      ),
+    );
   }
 }
