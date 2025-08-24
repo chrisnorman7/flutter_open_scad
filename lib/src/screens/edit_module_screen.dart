@@ -63,7 +63,9 @@ class EditModuleScreen extends ConsumerWidget {
                   id: newId(),
                   type: shapeType,
                   arguments: switch (shapeType) {
-                    ShapeType.circle => CircleArguments().toJson(),
+                    ShapeType.circle => CircleArguments(
+                      size: const ArgumentValue(value: 10),
+                    ).toJson(),
                     ShapeType.square => SquareArguments().toJson(),
                     ShapeType.cube => CubeArguments().toJson(),
                     ShapeType.cylinder => CylinderArguments().toJson(),

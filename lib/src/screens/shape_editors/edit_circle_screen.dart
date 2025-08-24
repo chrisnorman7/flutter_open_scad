@@ -50,11 +50,17 @@ class EditCircleScreen extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                DoubleFormField(
-                  name: 'size',
-                  initialValue: arguments.size,
-                  labelText: 'Size',
+                ArgumentValueFormField(
                   autofocus: true,
+                  projectFilename: projectFilename,
+                  moduleId: moduleId,
+                  argumentValue: arguments.size,
+                  onDone: (final value) {
+                    arguments.size = value;
+                    shape.arguments = arguments.toJson();
+                    projectContext.save(ref);
+                  },
+                  label: 'Size',
                 ),
                 EnumFormField(
                   name: 'sizeType',
@@ -90,8 +96,12 @@ class EditCircleScreen extends ConsumerWidget {
                     if (formKey.currentState?.saveAndValidate() ?? false) {
                       final json =
                           formKey.currentState?.value ?? arguments.toJson();
-                      final testArguments = CircleArguments.fromJson(json);
-                      shape.arguments = testArguments.toJson();
+                      arguments
+                        ..sizeType = json['sizeType'] as SizeType
+                        ..fa = json['fa'] as double
+                        ..fs = json['fs'] as double
+                        ..fn = json['fn'] as int;
+                      shape.arguments = arguments.toJson();
                       projectContext.save(ref);
                       context.pop();
                     }

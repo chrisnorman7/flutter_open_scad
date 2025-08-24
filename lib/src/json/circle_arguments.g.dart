@@ -8,7 +8,7 @@ part of 'circle_arguments.dart';
 
 CircleArguments _$CircleArgumentsFromJson(Map<String, dynamic> json) =>
     CircleArguments(
-      size: (json['size'] as num?)?.toDouble() ?? 10.0,
+      size: ArgumentValue.fromJson(json['size'] as Map<String, dynamic>),
       sizeType:
           $enumDecodeNullable(_$SizeTypeEnumMap, json['sizeType']) ??
           SizeType.radius,
