@@ -16,9 +16,13 @@ const openFilesKey = 'flutter_open_scad_open_files';
 Future<OpenFiles> openFiles(final Ref ref) async {
   final preferences = SharedPreferencesAsync();
   final filenames = (await preferences.getStringList(openFilesKey)) ?? [];
-  return OpenFiles(
-    filenames.where((final filename) => File(filename).existsSync()).toList(),
-  );
+  final files =
+      filenames.map(File.new).where((final file) => file.existsSync()).toList()
+        ..sort(
+          (final a, final b) =>
+              a.statSync().modified.compareTo(b.statSync().modified),
+        );
+  return OpenFiles(files.map((final file) => file.path).toList());
 }
 
 /// Provide a single project.
@@ -77,7 +81,9 @@ List<ModuleVariable> moduleVariables(
   final String moduleId,
 ) {
   final module = ref.watch(projectModuleProvider(projectFilename, moduleId));
-  return module.variables;
+  return module.variables..sort(
+    (final a, final b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+  );
 }
 
 /// Provide a single variable.

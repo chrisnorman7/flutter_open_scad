@@ -45,7 +45,7 @@ final class OpenFilesProvider
   }
 }
 
-String _$openFilesHash() => r'88fdfb1c415f746ea2660791e6b3dba6cac6a517';
+String _$openFilesHash() => r'719e004e6907d775234900b0c92a0c15a1869192';
 
 /// Provide a single project.
 @ProviderFor(project)
@@ -449,7 +449,7 @@ final class ModuleVariablesProvider
   }
 }
 
-String _$moduleVariablesHash() => r'f778ad351ed5988e8b3c6246eeecd4227b93ce0c';
+String _$moduleVariablesHash() => r'39817dbce09eed324fba5406b0545d0150374be7';
 
 /// Provide all variables for a given module.
 final class ModuleVariablesFamily extends $Family
