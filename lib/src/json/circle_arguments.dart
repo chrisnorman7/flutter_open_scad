@@ -1,4 +1,5 @@
 import 'package:flutter_open_scad/flutter_open_scad.dart';
+import 'package:flutter_open_scad/src/json/project_module.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'circle_arguments.g.dart';
@@ -36,4 +37,27 @@ class CircleArguments {
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$CircleArgumentsToJson(this);
+
+  /// Return the code for this shape.
+  String getCode({
+    required final ProjectContext projectContext,
+    required final ProjectModule module,
+    final String indent = '',
+  }) {
+    final buffer = StringBuffer()
+      ..writeln('${indent}circle(')
+      ..write('$indent  ');
+    final sizeValue = module.getArgumentValueValue(size);
+    switch (sizeType) {
+      case SizeType.radius:
+        buffer.write('r');
+      case SizeType.diameter:
+        buffer.write('d');
+    }
+    buffer
+      ..writeln(' = $sizeValue,')
+      ..write({'fa': fa, 'fs': fs, 'fn': fn}.getCode(indent: '$indent  \$'))
+      ..writeln('$indent);');
+    return buffer.toString();
+  }
 }

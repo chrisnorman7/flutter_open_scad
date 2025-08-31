@@ -28,3 +28,12 @@ extension ListModuleVariableX on List<ModuleVariable> {
   /// Require a variable with the given [id].
   ModuleVariable requireVariable(final String id) => findVariable(id)!;
 }
+
+/// Useful methods for maps of variables.
+extension MapStringDynamic on Map<String, dynamic> {
+  /// Return this map as code.
+  String getCode({final String indent = '', final String lineEnding = ','}) =>
+      entries
+          .map((final e) => '$indent${e.key} = ${e.value}$lineEnding')
+          .join('\n');
+}

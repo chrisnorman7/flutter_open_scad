@@ -70,4 +70,55 @@ class ProjectModule {
   /// Get the value of [variable].
   double getVariableValue(final ModuleVariable variable) =>
       variable.getValue(availableVariables);
+
+  /// A code-friendly name for this module.
+  String get codeName => 'module_${id.snakeCase}';
+
+  /// Get the value for the given [argumentValue].
+  double getArgumentValueValue(final ArgumentValue argumentValue) {
+    final variableId = argumentValue.variableId;
+    if (variableId != null) {
+      final variable = availableVariables.requireVariable(variableId);
+      return getVariableValue(variable);
+    }
+    return argumentValue.value;
+  }
+
+  /// Return the code for this module.
+  String getCode({required final ProjectContext projectContext}) {
+    final buffer = StringBuffer()
+      ..writeln('// $name.')
+      ..writeln('module $codeName(');
+    for (final variable in variables) {
+      buffer
+        ..writeln('  // ${variable.name}.')
+        ..writeln('  ${variable.codeName} = ${getVariableValue(variable)},');
+    }
+    buffer
+      ..writeln(') {')
+      ..writeln('  // [code]');
+    for (final shape in shapes) {
+      buffer.writeln('  // ${shape.getName()}.');
+      final json = shape.arguments;
+      switch (shape.type) {
+        case ShapeType.circle:
+          final arguments = CircleArguments.fromJson(json);
+          buffer.write(
+            arguments.getCode(projectContext: projectContext, module: this),
+          );
+        case ShapeType.square:
+          final arguments = SquareArguments.fromJson(json);
+        case ShapeType.cube:
+          final arguments = CubeArguments.fromJson(json);
+        case ShapeType.cylinder:
+          final arguments = CylinderArguments.fromJson(json);
+        case ShapeType.sphere:
+          final arguments = SphereArguments.fromJson(json);
+        case ShapeType.module:
+          final arguments = ModuleArguments.fromJson(json);
+      }
+    }
+    buffer.writeln('}');
+    return buffer.toString();
+  }
 }

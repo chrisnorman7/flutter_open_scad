@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter_open_scad/flutter_open_scad.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:recase/recase.dart';
 
 part 'module_variable.g.dart';
 
@@ -136,6 +137,9 @@ class ModuleVariable {
         return atan(x);
     }
   }
+
+  /// Return the code-friendly name of this variable.
+  String get codeName => 'variable_${id.snakeCase}';
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ModuleVariableToJson(this);
